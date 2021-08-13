@@ -12,7 +12,7 @@
 
 <script>
 export default {
-	name: 'IconButton',
+	name: 'IconButton2',
 	props: ['icon']
 }
 </script>

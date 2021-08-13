@@ -22,20 +22,13 @@
 				<input
 					type="text"
 					@focus="onExpanded"
-					placeholder="Search here"
+					:placeholder="`Search here (${user.country})`"
 					v-model="search.keyword"
 					@input="onInputKeyword"
 					class="tw-text-base tw-text-gray-700 tw-w-full tw-bg-transparent tw-h-12 focus:tw-outline-none"
 				/>
 			</div>
-			<!-- <router-link v-if="!expanded" to="/profile">
-				<img
-					class="tw-rounded-full tw-w-7 tw-h-7"
-					:src="($user && $user.photoURL)||require('@/assets/img/avatar.jpg')"
-					:alt="$user ? $user.displayName : 'Profile avatar'"
-				/>
-			</router-link>-->
-			<router-link v-if="!expanded && $user.role === 'admin'" to="/admin">
+			<router-link v-if="!expanded && ['admin', 'super-admin'].includes($user.role)" to="/admin">
 				<svg
 					height="16"
 					width="16"
@@ -96,6 +89,7 @@ export default {
 	components: { SearchListItem, Subheader },
 	props: {
 		map: Object,
+		user: Object,
 		radius: [String, Number],
 		center: {
 			lat: [String, Number],

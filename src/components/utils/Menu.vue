@@ -34,6 +34,7 @@ export default {
 		},
 		value: {
 			type: Boolean,
+			default: false,
 			required: true
 		}
 	},

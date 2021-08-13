@@ -81,34 +81,42 @@ const router = new VueRouter({
     {
       path: '/admin',
       component: DashboardLayout,
-      redirect: '/admin/crimes',
-      meta: {
-        requiresAuth: true,
-        requireRoles: ['admin']
-      },
       children: [
-        // {
-        //   path: '',
-        //   name: 'Dashboard',
-        //   component: () => import(`@/views/Dashboard.vue`)
-        // },
+        {
+          path: '',
+          name: 'Dashboard',
+          meta: {
+            requiresAuth: true,
+            requireRoles: ['admin', 'super-admin']
+          },
+          component: () => import(`@/views/admin/Dashboard.vue`)
+        },
+        {
+          path: 'map',
+          name: 'Map',
+          meta: {
+            requiresAuth: true,
+            requireRoles: ['admin', 'super-admin']
+          },
+          component: () => import(`@/views/admin/Map.vue`)
+        },
         {
           path: 'crimes',
           name: 'Crimes',
           meta: {
             requiresAuth: true,
-            requireRoles: ['admin']
+            requireRoles: ['admin', 'super-admin']
           },
-          component: () => import(`@/views/dashboard/Crimes.vue`)
+          component: () => import(`@/views/admin/Crimes.vue`)
         },
         {
           path: 'users',
           name: 'Users',
           meta: {
             requiresAuth: true,
-            requireRoles: ['admin']
+            requireRoles: ['admin', 'super-admin']
           },
-          component: () => import(`@/views/dashboard/Users.vue`)
+          component: () => import(`@/views/admin/Users.vue`)
         }
       ]
     },
@@ -118,6 +126,7 @@ const router = new VueRouter({
 router.beforeEach((to, _, next) => {
   const isAuth = store.getters['Auth/$isAuth']
   const authRole = store.getters['Auth/$authRole']
+  console.log('authRole', authRole)
 
   // Redirect to login if not logged in
   const requiresAuth = to.matched.some(res => res.meta.requiresAuth)

@@ -1,5 +1,7 @@
 <template>
-	<div class="app-layout tw-flex tw-flex-col tw-overflow-hidden">
+	<div
+		class="app-layout tw-flex tw-flex-col tw-overflow-hidden tw-max-w-3xl tw-w-full tw-relative tw-mx-auto"
+	>
 		<main class="app-layout__main tw-flex-1 tw-flex tw-flex-col tw-overflow-hidden">
 			<route-wrapper>
 				<router-view />

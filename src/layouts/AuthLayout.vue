@@ -1,8 +1,10 @@
 <template>
-	<div class="auth__wrapper">
-		<route-wrapper>
-			<router-view />
-		</route-wrapper>
+	<div class="tw-overflow-y-auto tw-px-4">
+		<div class="tw-max-w-xl tw-mx-auto tw-w-full">
+			<route-wrapper>
+				<router-view />
+			</route-wrapper>
+		</div>
 	</div>
 </template>
 
@@ -15,10 +17,3 @@ export default {
 	}
 }
 </script>
-<style lang="scss" scoped>
-	.auth {
-		&__wrapper {
-			padding: 0 15px;
-		}
-	}
-</style>

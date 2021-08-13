@@ -1,7 +1,7 @@
 <template>
 	<div
 		:style="{ height: appHeight + 'px' }"
-		class="app tw-flex tw-flex-col tw-relative tw-max-w-3xl tw-mx-auto tw-w-full tw-overflow-hidden"
+		class="tw-flex tw-flex-col tw-relative tw-overflow-hidden"
 	>
 		<div v-if="loading" class="tw-absolute tw-inset-0 tw-grid tw-place-items-center">
 			<RotateSquare3 size="64px" />
@@ -36,8 +36,6 @@ export default {
 	created() {
 		this.loading = true
 		Auth.onStateChanged(user => {
-			console.log('onStateChanged', user)
-
 			this.$store.commit('Auth/SET', {
 				user: user ? user : { id: null },
 				isAuth: user ? true : false,
@@ -52,6 +50,11 @@ export default {
 			if (redirectIsAuth && user && this.$route.name !== 'Home') this.$router.replace({ name: 'Home' })
 
 			if (user) {
+
+				// user.ref.sendEmailVerification({
+				// 	handleCodeInApp: true,
+				// 	url: `http://localhost:8080/cart?email=${user.email}&cartId=123`,
+				// })
 				const isUser = user.role === 'user'
 
 				// Confirmed crimes
@@ -60,7 +63,7 @@ export default {
 
 				// UnConfirmed crimes
 				let unConfirmedCrimes = Crimes.where('confirmedBy', '==', null)
-				if (isUser) unConfirmedCrimes = unConfirmedCrimes.where('recordedBy', '==', user.id)
+				if (isUser) unConfirmedCrimes = unConfirmedCrimes.where('recordedBy', '==', user.userId)
 				unConfirmedCrimes.get().then(this.onCrimesAdded)
 
 				// New crime added
@@ -68,7 +71,7 @@ export default {
 				newCrimes.onSnapshot(snapShot => {
 					if (snapShot.empty) return
 					let [crime] = this.snapShotToArray(snapShot)
-					if (isUser && crime.recordedBy !== user.id && !crime.confirmedAt) return
+					if (isUser && crime.recordedBy !== user.userId && !crime.confirmedAt) return
 					if (this.isExist(crime)) return
 					this.pushCrime(crime)
 				})

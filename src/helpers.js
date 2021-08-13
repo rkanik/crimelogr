@@ -1,3 +1,8 @@
+export const miniId = (len = 3) =>
+	Math.random()
+		.toString(36)
+		.slice(len <= 10 ? -len : -10);
+
 export const snapShotToArray = snapShot => {
 	let data = []
 	snapShot.forEach(doc => {

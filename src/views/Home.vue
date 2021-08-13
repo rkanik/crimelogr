@@ -64,7 +64,13 @@
 			/>
 		</gmap-map>
 
-		<search-bar :map="map" :radius="radius" :center="circle.location" @place="onSelectPlace" />
+		<search-bar
+			:map="map"
+			:user="$user"
+			:radius="radius"
+			:center="circle.location"
+			@place="onSelectPlace"
+		/>
 
 		<map-types v-model="mapType" class="tw-absolute tw-right-3 tw-top-18" />
 
@@ -294,7 +300,7 @@ export default {
 			set(v) { this.setCircle(v) }
 		},
 		isAdmin() {
-			return this.$user.role === 'admin'
+			return ['admin', 'super-admin'].includes(this.$user.role)
 		},
 		psi() {
 			if (this.radius !== 2000) return null
@@ -353,7 +359,7 @@ export default {
 		async onCreateRecord(record) {
 			let res = await this.createRecord({
 				...record,
-				recordedBy: this.$user.id,
+				recordedBy: this.$user.userId,
 				latLng: this.circle.location,
 				possibleDuplication: false,
 				confirmedAt: this.isAdmin ? Date.now() : null,
@@ -464,7 +470,7 @@ export default {
 			const div = document.createElement('div')
 
 			let btn, notConfirmed
-			const canDelete = this.isAdmin || this.$user.id === rec.recordedBy
+			const canDelete = this.isAdmin || this.$user.userId === rec.recordedBy
 			if (canDelete) {
 				// Delete button
 				btn = document.createElement('button')
@@ -476,7 +482,7 @@ export default {
 					this.hideInfo()
 				})
 			}
-			if (this.$user.id === rec.recordedBy && !rec.confirmedBy) {
+			if (this.$user.userId === rec.recordedBy && !rec.confirmedBy) {
 				notConfirmed = `
 					<p class='tw-text-sm tw-text-red-500 tw-ml-3 tw-mb-0 tw-leading-9'>Not confirmed yet</p>
 				`
@@ -513,11 +519,11 @@ export default {
 				<div>Crime Points: <strong>${rec.crime.points}</strong></div>
 				<div>Confidence in Crime: <strong>${rec.crimeConfidence}</strong></div>
 				<div>Confidence in Location: <strong>${rec.locationConfidence}</strong></div>
-				<div>When it happended: <strong>${new Date(rec.createdAt).toLocaleString()}</strong></div>
-				<div>No. of Victims: <strong>TODO</strong></div>
-				<div>Source of Info: <strong>TODO</strong></div>
+				<div>When it happended: <strong>${rec.occuredAt}</strong></div>
+				<div>No. of Victims: <strong>${rec.noOfVictims}</strong></div>
+				<div>Source of Info: <strong>${rec.sourceOfInfo}</strong></div>
 				<div>Web Link: <strong>${rec.website}</strong></div>
-				<div>Recorded By: <strong>TODO</strong></div>
+				${this.isAdmin ? `<div>Recorded By: <strong>${rec.recordedBy}</strong></div>` : ''}
 			`
 			else div.innerHTML = `
 				${!rec.confirmedBy ? "<div class='tw-text-sm tw-text-red-500 tw-mb-0'>Not confirmed yet</div>" : ""}

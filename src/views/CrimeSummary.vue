@@ -51,7 +51,7 @@ export default {
 	methods: {
 		getTotalNumber(id) {
 			return this.crimesInsideRadius.reduce(
-				(total, c) => c.crime.id === id
+				(total, c) => c.categoryId === id
 					? total + 1
 					: total,
 				0
@@ -63,7 +63,7 @@ export default {
 					.find(crime => crime.id === id).crimes
 					.map(crime => {
 						return this.crimesInsideRadius.reduce(
-							(no, c) => c.crime.type === crime.type ? no + 1 : no,
+							(no, c) => c.type === crime.type ? no + 1 : no,
 							0
 						)
 					})

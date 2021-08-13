@@ -6,39 +6,39 @@
 		"crimes": [
 			{
 				"type": "Armed Robbery",
-				"points": 9
-			},
-			{
-				"type": "Kidnapping",
-				"points": 8
-			},
-			{
-				"type": "Rape",
-				"points": 8
-			},
-			{
-				"type": "Personal Assault",
 				"points": 7
-			},
-			{
-				"type": "Terrorism",
-				"points": 9
 			},
 			{
 				"type": "Mob Attack or Lynching",
 				"points": 9
 			},
 			{
+				"type": "Kidnapping",
+				"points": 7
+			},
+			{
 				"type": "Murder / Killing",
 				"points": 9
+			},
+			{
+				"type": "Rape",
+				"points": 7
 			},
 			{
 				"type": "Police Brutality",
 				"points": 7
 			},
 			{
+				"type": "Personal Assault",
+				"points": 7
+			},
+			{
 				"type": "Cult or Gang Violence",
 				"points": 8
+			},
+			{
+				"type": "Terrorism",
+				"points": 7
 			},
 			{
 				"type": "Child Sexual Molestation",
@@ -56,102 +56,102 @@
 				"points": 4
 			},
 			{
+				"type": "Vehicle Theft",
+				"points": 6
+			},
+			{
 				"type": "Burglary",
 				"points": 4
 			},
 			{
-				"type": "People Fighting",
-				"points": 6
-			},
-			{
-				"type": "Riots",
-				"points": 6
-			},
-			{
-				"type": "Violent Protest",
-				"points": 6
-			},
-			{
-				"type": "Domestic Abuse",
-				"points": 5
-			},
-			{
-				"type": "Vehicle Theft",
-				"points": 4
-			},
-			{
 				"type": "Religious Tension/Conflict",
+				"points": 6
+			},
+			{
+				"type": "People Fighting",
 				"points": 4
 			},
 			{
 				"type": "Mugging",
-				"points": 5
+				"points": 6
+			},
+			{
+				"type": "Riots",
+				"points": 4
 			},
 			{
 				"type": "Destruction of Property",
-				"points": 5
+				"points": 6
+			},
+			{
+				"type": "Violent Protest",
+				"points": 4
 			},
 			{
 				"type": "Sexual Harrassment",
-				"points": 5
+				"points": 6
+			},
+			{
+				"type": "Domestic Abuse",
+				"points": 4
+			},
+			{
+				"type": "Drag Use/Possesion",
+				"points": 6
 			}
 		]
 	},
 	{
 		"id": 3,
-		"color": "#FFEB3B",
+		"color": "#313131",
 		"category": "Non-Violent Crimes",
 		"crimes": [
 			{
 				"type": "Cybercrime",
+				"points": 1
+			},
+			{
+				"type": "Forgery & Counterfeiting",
 				"points": 3
 			},
 			{
 				"type": "Embezzlement",
-				"points": 2
+				"points": 1
+			},
+			{
+				"type": "Bribery & Extortion",
+				"points": 3
 			},
 			{
 				"type": "Smuggling",
 				"points": 1
 			},
 			{
-				"type": "Human Trafficking",
-				"points": 3
-			},
-			{
-				"type": "Drug Use / Possesion",
-				"points": 3
-			},
-			{
-				"type": "Hate Speech/Crime",
-				"points": 2
-			},
-			{
-				"type": "Forgery & Counterfeiting",
-				"points": 2
-			},
-			{
-				"type": "Bribery & Extortion",
-				"points": 2
-			},
-			{
 				"type": "Child Labour",
 				"points": 3
 			},
 			{
+				"type": "Human Trafficking",
+				"points": 1
+			},
+			{
 				"type": "Illegal Waste Disposal",
+				"points": 3
+			},
+			{
+				"type": "Hate Speech / Crime",
 				"points": 1
 			},
 			{
 				"type": "Illegal Water/Electricity Tapping",
+				"points": 3
+			},
+			{
+				"type": "Bullying / Harrassment",
 				"points": 1
 			},
 			{
 				"type": "Impersonation",
-				"points": 1
-			},
-			{
-				"type": "Bullying",
 				"points": 3
 			}
 		]

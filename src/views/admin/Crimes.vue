@@ -2,20 +2,36 @@
 	<div>
 		<div class="tw-flex tw-items-center tw-mb-4 tw-flex-wrap">
 			<h4 class="tw-text-xl tw-flex-none">Crimes List</h4>
-			<b-form-select
-				size="sm"
-				v-model="filterBy"
-				:options="filterOptions"
-				class="tw-border tw-ml-auto tw-rounded tw-px-4 tw-py-1"
-			></b-form-select>
+			<crime-filters outlined class="tw-ml-auto tw-mt-3"></crime-filters>
 			<b-form-input
-				size="sm"
 				v-model="search.keyword"
-				placeholder="Seach here"
-				class="tw-border tw-rounded tw-w-48 tw-ml-auto tw-mt-2 sm:tw-mt-0 sm:tw-ml-2"
+				placeholder="Filter crime"
+				class="tw-border tw-hidden tw-mt-3 sm:tw-block tw-border-gray-400 tw-rounded tw-h-10 tw-w-48 tw-ml-auto sm:tw-ml-auto lg:tw-ml-3"
 			/>
+			<b-button
+				variant="success"
+				v-if="selection.length"
+				@click="onApproveSelected"
+				class="tw-h-10 tw-mt-3 tw-ml-3"
+			>Approve Selected</b-button>
 		</div>
+		<b-form-input
+			size="sm"
+			v-model="search.keyword"
+			placeholder="Filter crime"
+			class="sm:tw-hidden tw-mb-4 tw-w-full tw-border tw-border-gray-400 tw-rounded tw-h-10 tw-ml-auto tw-mt-2"
+		/>
 
+		<div
+			v-if="filter.type==='not-approved'"
+			class="tw-w-1/2 tw-h-5 tw-flex tw-items-center tw-justify-end md:tw-hidden tw-mb-1 tw-space-x-2 tw-pr-3"
+		>
+			<div class="tw-font-bold">
+				<span v-if="!selection.length">Select All</span>
+				<span v-else>Deselect All</span>
+			</div>
+			<check-box color="#198754" :value="selection.length>0" @input="onToggleCheckAll"></check-box>
+		</div>
 		<b-table
 			small
 			show-empty
@@ -29,21 +45,27 @@
 				<span
 					class="px-3 tw-py-1 tw-rounded tw-text-sm"
 					:class="{
-						'tw-bg-red-500 tw-text-white': row.item.crime.id === crime.violent,
-						'tw-bg-orange-500 tw-text-white': row.item.crime.id === crime.rough,
-						'tw-bg-yellow-500': row.item.crime.id === crime.nonViolent,
+						'tw-bg-red-500 tw-text-white': row.item.categoryId === crime.violent,
+						'tw-bg-orange-500 tw-text-white': row.item.categoryId === crime.rough,
+						'tw-bg-yellow-500': row.item.categoryId === crime.nonViolent,
 					}"
-				>{{row.item.crime.category}}</span>
+				>{{row.item.category}}</span>
 			</template>
 			<template #row-details="row">
 				<div class="tw-grid tw-gap-2 md:tw-gap-4 tw-grid-cols-2 sm:tw-grid-cols-4 tw-py-4">
 					<div>
 						<div class="tw-uppercase tw-text-gray-500 tw-text-xs">Confirmed By</div>
-						<div>{{row.item.confirmedBy}}</div>
+						<div>{{row.item.confirmedBy || 'Not confirmed yet'}}</div>
 					</div>
 					<div>
 						<div class="tw-uppercase tw-text-gray-500 tw-text-xs">Confirmed At</div>
-						<div>{{$m(row.item.confirmedAt).format('DD/MM/YYYY hh:mm A')}}</div>
+						<div>
+							{{
+							row.item.confirmedAt
+							?$m(row.item.confirmedAt).format('DD/MM/YYYY hh:mm A')
+							:'None'
+							}}
+						</div>
 					</div>
 					<div>
 						<div class="tw-uppercase tw-text-gray-500 tw-text-xs">Location Coordinates</div>
@@ -63,12 +85,26 @@
 					</div>
 					<div>
 						<div class="tw-uppercase tw-text-gray-500 tw-text-xs">Website Link</div>
-						<div>{{row.item.website}}</div>
+						<div>{{row.item.website || 'None'}}</div>
 					</div>
 					<div>
 						<div class="tw-uppercase tw-text-gray-500 tw-text-xs">Recorded At</div>
 						<div>{{$m(row.item.createdAt).format('DD/MM/YYYY hh:mm A')}}</div>
 					</div>
+				</div>
+			</template>
+			<template #head(select)>
+				<div class="tw-h-5 tw-flex tw-items-center tw-justify-center">
+					<check-box color="#198754" :value="selection.length>0" @input="onToggleCheckAll"></check-box>
+				</div>
+			</template>
+			<template #cell(select)="row">
+				<div class="tw-h-8 tw-flex tw-items-center tw-justify-start md:tw-justify-center">
+					<check-box
+						color="#198754"
+						:value="selection.includes(row.item.id)"
+						@input="onToggleSelection(row.item)"
+					></check-box>
 				</div>
 			</template>
 			<template #cell(actions)="row">
@@ -80,7 +116,7 @@
 						:class="{'tw-rotate-90':row.detailsShowing}"
 						@click="row.toggleDetails"
 					></icon-button-2>
-					<Menu v-model="row.item.menu" contentClass="tw-w-48 tw-right-0 tw-bg-white tw-boder">
+					<Menu v-model="row.item.optionMenu" contentClass="tw-w-48 tw-right-0 tw-bg-white tw-boder">
 						<template #toggler="{on}">
 							<icon-button-2 v-on="on" icon="three-dots"></icon-button-2>
 						</template>
@@ -114,90 +150,26 @@
 				:per-page="perPage"
 			></b-pagination>
 		</div>
-
-		<!-- <div class="tw-space-y-3 tw-mt-3">
-			<div :key="rec.id" v-for="rec in filterredCrimes">
-				<div
-					class="tw-p-4 tw-border tw-border-gray-300 tw-rounded tw-space-y-1"
-					:class="{
-						'tw-bg-red-100': rec.crime.id === crime.violent,
-						'tw-bg-orange-100': rec.crime.id === crime.rough,
-						'tw-bg-yellow-100': rec.crime.id === crime.nonViolent,
-					}"
-				>
-					<div class="tw-flex tw-justify-between">
-						<span>Category</span>
-						<span
-							class="px-3 tw-rounded tw-text-sm"
-							:class="{
-								'tw-bg-red-500 tw-text-white': rec.crime.id === crime.violent,
-								'tw-bg-orange-500 tw-text-white': rec.crime.id === crime.rough,
-								'tw-bg-yellow-500': rec.crime.id === crime.nonViolent,
-							}"
-						>{{rec.crime.category}}</span>
-					</div>
-					<div class="tw-flex tw-justify-between">
-						<span>Crime type</span>
-						<span>{{rec.crime.type}}</span>
-					</div>
-					<div class="tw-flex tw-justify-between">
-						<span>Crime points</span>
-						<span>{{rec.crime.points}}</span>
-					</div>
-					<div class="tw-flex tw-justify-between">
-						<span>Confidence in this crime event</span>
-						<span class="tw-capitalize">{{rec.crimeConfidence}}</span>
-					</div>
-					<div class="tw-flex tw-justify-between">
-						<span>Confidence in crime location</span>
-						<span class="tw-capitalize">{{rec.locationConfidence}}</span>
-					</div>
-					<div class="tw-flex tw-justify-between">
-						<span>When did this crime happen?</span>
-						<span>{{new Date(rec.createdAt).toLocaleString()}}</span>
-					</div>
-					<div class="tw-flex tw-justify-between">
-						<span>Website link</span>
-						<span>{{rec.website}}</span>
-					</div>
-					<div class="tw-flex tw-justify-between">
-						<span>Approved</span>
-						<span>{{rec.confirmedBy ? 'Yes' : 'No'}}</span>
-					</div>
-					<div v-if="!rec.confirmedBy">
-						<div class="tw-mt-3">
-							<b-button size="sm" @click="approve(rec)">Approve</b-button>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>-->
 	</div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import CrimeFilters from '../../components/CrimeFilters.vue'
+import CheckBox from '../../components/utils/CheckBox.vue'
 import IconButton2 from '../../components/utils/IconButton2.vue'
 import Menu from '../../components/utils/Menu.vue'
-import { _crime } from '../../consts'
+import { _crime, } from '../../consts'
 import { isObject } from '../../helpers'
 export default {
-	components: { IconButton2, Menu },
 	name: 'Crimes',
+	components: { IconButton2, Menu, CheckBox, CrimeFilters },
 	data: () => ({
 		crime: _crime,
-		filterBy: 'all',
-		filterOptions: [
-			{ value: 'all', text: 'All Crimes' },
-			{ value: 1, text: 'Violent Crimes' },
-			{ value: 2, text: 'Rough Crimes' },
-			{ value: 3, text: 'Non-Violent Crimes' },
-			{ value: 'not-approved', text: 'Not approved' },
-		],
 		fields: [
 			{ key: 'category', label: 'Category', class: 'tw-whitespace-nowrap' },
-			{ key: 'crime.type', label: 'Type', class: 'tw-whitespace-nowrap' },
-			{ key: 'crime.points', label: 'Points' },
+			{ key: 'type', label: 'Type', class: 'tw-whitespace-nowrap' },
+			{ key: 'points', label: 'Points' },
 			{ key: 'crimeConfidence', label: 'Confidence in Crime' },
 			{ key: 'locationConfidence', label: 'Confidence in Location' },
 			{ key: 'recordedBy', label: 'Recorded By' },
@@ -211,22 +183,33 @@ export default {
 		],
 		search: {
 			keyword: ''
-		}
+		},
+		checkAll: false,
+		selection: []
 	}),
+	watch: {
+		'$filter.type'(type) {
+			this.onChangeFilterBy(type)
+		}
+	},
 	computed: {
 		...mapGetters('Auth', ['$user']),
 		...mapGetters('Users', ['$users']),
-		...mapGetters('Records', ['$records']),
+		...mapGetters('Records', ['$records', '$filter']),
+		filter: {
+			get() { return this.$filter },
+			set(v) { this.setFilter(v) }
+		},
 		totalRows() {
 			return this.filterredCrimes.length
 		},
 		filterredCrimes() {
 			let records = this.$records
-			if (this.filterBy === 'not-approved') {
+			if (this.filter.type === 'not-approved') {
 				records = records.filter(r => !r.confirmedBy)
 			}
-			else if (this.filterBy !== 'all') {
-				records = records.filter(rec => rec.crime.id === this.filterBy)
+			else if (this.filter.type !== 'all') {
+				records = records.filter(rec => rec.categoryId === this.filter.type)
 			}
 			if (this.search.keyword.trim()) {
 				let keyword = this.search.keyword.trim().toLowerCase()
@@ -240,6 +223,54 @@ export default {
 		}
 	},
 	methods: {
+		async onApproveSelected() {
+			for (let id of this.selection) {
+				let record = this.filterredCrimes.find(
+					rec => rec.id === id
+				)
+				if (record) await record.ref.update({
+					updatedAt: Date.now(),
+					confirmedAt: Date.now(),
+					confirmedBy: this.$user.userId,
+				})
+			}
+			this.selection = []
+			if (!this.filterredCrimes.length) {
+				this.filter.type = 'all'
+			}
+		},
+		onToggleCheckAll(value) {
+			if (value) {
+				this.selection = this.filterredCrimes.map(
+					record => record.id
+				)
+			}
+			else this.selection = []
+		},
+		onToggleSelection(record) {
+			console.log('onToggleSelection', record)
+			if (this.selection.includes(record.id)) {
+				this.selection = this.selection.filter(
+					id => id !== record.id
+				)
+			}
+			else this.selection.push(record.id)
+			this.checkAll = !!this.selection.length
+		},
+		onChangeFilterBy(by) {
+			if (by === 'not-approved') {
+				this.fields.unshift({
+					key: 'select',
+					label: 'Select'
+				})
+			}
+			else {
+				this.selection = []
+				this.fields = this.fields.filter(
+					field => field.key !== 'select'
+				)
+			}
+		},
 		findMatch(value, keyword) {
 			if (typeof value === 'string') {
 				return value.toLowerCase().includes(keyword) || value == keyword

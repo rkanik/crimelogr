@@ -2,13 +2,19 @@ import DB from '../../firebase/db'
 import { createMutations, handle } from '../store.helpers'
 
 const initalState = () => ({
-	records: []
+	records: [],
+	filter: {
+		range: 3, // range in months
+		type: 'all',
+		country: 'All Countries',
+	}
 })
 
 const state = initalState()
 const mutations = createMutations('SET', 'PUSH', 'CONCAT', 'UPDATE', 'DELETE')
 
 const getters = {
+	$filter: state => state.filter,
 	$records: state => state.records,
 }
 
@@ -42,6 +48,9 @@ const actions = {
 	updateCrime: ({ commit }, crime) => {
 		commit('UPDATE', ['records', crime])
 	},
+	setFilter({ commit }, filter) {
+		commit('SET', { filter })
+	}
 }
 
 export default {

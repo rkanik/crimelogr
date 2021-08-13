@@ -29,13 +29,16 @@
 </template>
 
 <script>
-import {  mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 import Sidebar from '../components/Sidebar.vue'
 import Drawer from '../components/utils/Drawer.vue'
 
 import BreakpointsMixin from '../mixins/breakpoints.mixin'
 import RouteWrapperY from '../components/utils/RouteWrapperY.vue'
+import { Crimes } from '../firebase/init'
+import { snapShotToArray } from '../helpers'
+import { _time } from '../consts'
 
 export default {
 	name: 'DashboardLayout',
@@ -53,14 +56,65 @@ export default {
 	watch: {
 		'$route.path'() {
 			this.sidebar.expanded = false
+		},
+		$filter: {
+			deep: true,
+			immediate: true,
+			handler(filter) {
+				// console.log('onChangeFilter', filter)
+				// GET ALL CRIMES
+				let crimesQuery = Crimes
+					.orderBy('createdAt', 'desc')
+					.orderBy('updatedAt', 'desc')
+
+				if (filter.country !== 'All Countries') {
+					crimesQuery = crimesQuery.where('country', '==', filter.country)
+				}
+				if (filter.type === 'not-approved') {
+					crimesQuery = crimesQuery.where('confirmedBy', '==', null)
+				}
+				else if (filter.type !== 'all') {
+					crimesQuery = crimesQuery.where('categoryId', '==', filter.type)
+				}
+				crimesQuery = crimesQuery.where('createdAt', '>=', Date.now() - (_time.month * filter.range))
+
+				crimesQuery
+					.limit(100).get()
+					.then(snapShot => {
+						let crimes = !snapShot.empty
+							? snapShotToArray(snapShot) : []
+						this.setRecords(crimes)
+					})
+
+				// ON NEW CRIME
+				crimesQuery
+					.limit(1)
+					.onSnapshot(snapShot => {
+						if (!snapShot.size) return
+						let [crime] = snapShotToArray(snapShot)
+						console.log('ON NEW CRIME', crime)
+						this.isExist(crime)
+							? this.updateCrime(crime)
+							: this.pushCrime(crime)
+					})
+			}
 		}
 	},
 	computed: {
-		...mapGetters('Auth', ['$user'])
+		...mapGetters('Auth', ['$user']),
+		...mapGetters('Records', ['$records', '$filter']),
 	},
 	methods: {
+		...mapActions('Records', [
+			'setRecords', 'pushCrime', 'updateCrime'
+		]),
 		goto(path) {
 			this.$router.push(path)
+		},
+		isExist(crime) {
+			return this.$records.some(
+				crm => crm.id === crime.id
+			)
 		}
 	},
 }

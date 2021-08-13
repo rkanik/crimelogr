@@ -57,7 +57,7 @@
 				@click="onClickRecordMarker(record)"
 				:icon="record.confirmedBy
 					? (record.isInside
-						? require(`@/assets/svg/${record.crime.id}-marker.svg`)
+						? require(`@/assets/svg/${record.categoryId}-marker.svg`)
 						:	require(`@/assets/svg/black-marker.svg`)
 					) : require(`@/assets/svg/not-confirmed.svg`)
 				"
@@ -200,7 +200,8 @@ import CreateRecordDialog from '@/components/CreateRecordDialog'
 import MapTypes from '../components/MapTypes.vue'
 import Menu from '../components/utils/Menu.vue'
 import { only } from '../helpers'
-import { _nigeriaBounds, _time } from '../consts'
+// import { _nigeriaBounds, _time } from '../consts'
+import { _time } from '../consts'
 import crimes from '@/data.json'
 import IconButton from '../components/utils/IconButton.vue'
 
@@ -273,11 +274,10 @@ export default {
 	mounted() {
 		this.$refs.mapRef.$mapPromise.then(map => {
 			this.map = map
-			// console.log(_nigeriaBounds)
-			this.map.setRestriction({
-				latLngBounds: _nigeriaBounds,
-				strictBounds: false,
-			})
+			// this.map.setRestriction({
+			// 	latLngBounds: _nigeriaBounds,
+			// 	strictBounds: false,
+			// })
 			this.infoWindow = new window.google.maps.InfoWindow();
 
 			if (this.$route.query.center) {
@@ -307,7 +307,7 @@ export default {
 			let cats = this.insideCrimes
 				.filter(crm => (+crm.createdAt + _time.month) > Date.now())
 				.reduce((cats, crm) => {
-					cats[crm.crime.id] += crm.crime.points
+					cats[crm.categoryId] += crm.points
 					return cats
 				}, { 1: 0, 2: 0, 3: 0 })
 
@@ -329,7 +329,7 @@ export default {
 		},
 		pointsInsideCircle() {
 			return this.insideCrimes
-				.reduce((total, rec) => total + rec.crime.points, 0)
+				.reduce((total, rec) => total + rec.points, 0)
 		},
 		insideCrimes() {
 			return this.mappedCrimes
@@ -359,6 +359,7 @@ export default {
 		async onCreateRecord(record) {
 			let res = await this.createRecord({
 				...record,
+				country: this.$user.country,
 				recordedBy: this.$user.userId,
 				latLng: this.circle.location,
 				possibleDuplication: false,
@@ -502,7 +503,7 @@ export default {
 					const update = {
 						updatedAt: Date.now(),
 						confirmedAt: Date.now(),
-						confirmedBy: this.$user.id,
+						confirmedBy: this.$user.userId,
 					}
 					await rec.ref.update(update)
 					this.onClickRecordMarker({ ...rec, ...update })
@@ -514,9 +515,9 @@ export default {
 			notConfirmed && (wrapper.innerHTML += notConfirmed)
 
 			if (rec.isInside) div.innerHTML = `
-				<div>Category: <strong>${rec.crime.category}</strong></div>
-				<div>Type: <strong>${rec.crime.type}</strong></div>
-				<div>Crime Points: <strong>${rec.crime.points}</strong></div>
+				<div>Category: <strong>${rec.category}</strong></div>
+				<div>Type: <strong>${rec.type}</strong></div>
+				<div>Crime Points: <strong>${rec.points}</strong></div>
 				<div>Confidence in Crime: <strong>${rec.crimeConfidence}</strong></div>
 				<div>Confidence in Location: <strong>${rec.locationConfidence}</strong></div>
 				<div>When it happended: <strong>${rec.occuredAt}</strong></div>

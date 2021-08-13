@@ -91,11 +91,13 @@
 
 <script>
 import { mapActions } from 'vuex'
+import { countries } from '../consts'
 import { miniId } from '../helpers'
 export default {
 	name: 'Register',
 	data() {
 		return {
+			countries,
 			user: {
 				userId: 'CL' + miniId(10).toUpperCase(),
 				name: '',
@@ -109,10 +111,6 @@ export default {
 			},
 			confirmPassword: '',
 			confirmPasswordErr: null,
-			countries: [
-				'Nigeria', 'Ghana',
-				'South Africa', 'Kenya'
-			],
 			processing: false,
 			error: '',
 		}

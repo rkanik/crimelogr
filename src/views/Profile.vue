@@ -99,11 +99,13 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import { countries } from '../consts'
 import { only } from '../helpers'
 export default {
 	name: 'Profile',
 	data() {
 		return {
+			countries,
 			update: false,
 			user: {
 				name: '',
@@ -112,10 +114,6 @@ export default {
 				dob: '',
 				phoneNumber: '',
 			},
-			countries: [
-				'Nigeria', 'Ghana',
-				'South Africa', 'Kenya'
-			],
 			processing: false,
 		}
 	},

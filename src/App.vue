@@ -22,8 +22,8 @@
 <script>
 import Auth from "@/firebase/auth"
 import { mapActions, mapGetters } from 'vuex'
-import { Crimes } from './firebase/init'
 import RotateSquare3 from 'vue-loading-spinner/src/components/RotateSquare3.vue'
+import { Users } from './firebase/init'
 export default {
 	name: 'App',
 	components: {
@@ -49,53 +49,24 @@ export default {
 			const redirectIsAuth = this.$route.matched.some(res => res.meta.redirectIsAuth)
 			if (redirectIsAuth && user && this.$route.name !== 'Home') this.$router.replace({ name: 'Home' })
 
-			if (user) {
-
-				// user.ref.sendEmailVerification({
-				// 	handleCodeInApp: true,
-				// 	url: `http://localhost:8080/cart?email=${user.email}&cartId=123`,
-				// })
-				const isUser = user.role === 'user'
-
-				// Confirmed crimes
-				let confirmedCrimes = Crimes.where('confirmedBy', '!=', null)
-				confirmedCrimes.get().then(this.onCrimesAdded)
-
-				// UnConfirmed crimes
-				let unConfirmedCrimes = Crimes.where('confirmedBy', '==', null)
-				if (isUser) unConfirmedCrimes = unConfirmedCrimes.where('recordedBy', '==', user.userId)
-				unConfirmedCrimes.get().then(this.onCrimesAdded)
-
-				// New crime added
-				let newCrimes = Crimes.limit(1).orderBy('createdAt', 'desc')
-				newCrimes.onSnapshot(snapShot => {
-					if (snapShot.empty) return
-					let [crime] = this.snapShotToArray(snapShot)
-					if (isUser && crime.recordedBy !== user.userId && !crime.confirmedAt) return
-					if (this.isExist(crime)) return
-					this.pushCrime(crime)
-				})
-
-				// On Confirmed
-				Crimes.limit(1)
-					.where('confirmedAt', '!=', null)
-					.orderBy('confirmedAt', 'desc')
-					.onSnapshot(snapShot => {
-						if (snapShot.empty) return
-						let [crime] = this.snapShotToArray(snapShot)
-						console.log('confirmed', crime)
-						this.updateCrime(crime)
-					})
-			}
-
 			this.loading = false
+
+			if (user) {
+				Users.doc(user.id).onSnapshot(userSnapshot => {
+					this.$store.commit('Auth/SET', {
+						user: {
+							id: userSnapshot.id,
+							...userSnapshot.data()
+						},
+					})
+				})
+			}
 		})
 	},
 	mounted() { window.addEventListener('resize', this.onResize) },
 	beforeDestroy() { window.removeEventListener('resize', this.onResize) },
 	computed: {
 		...mapGetters(['$subscribeModal']),
-		...mapGetters('Records', ['$records']),
 		subscribeModal: {
 			get() {
 				return this.$subscribeModal
@@ -109,33 +80,8 @@ export default {
 		...mapActions([
 			'toggleSubscribeModal'
 		]),
-		...mapActions('Records', [
-			'setRecords', 'pushCrime',
-			'concatCrimes', 'updateCrime'
-		]),
 		onResize() {
 			this.appHeight = window.innerHeight
-		},
-		snapShotToArray(snapShot) {
-			let data = []
-			snapShot.forEach(doc => {
-				data.push({
-					id: doc.id,
-					ref: doc.ref,
-					...doc.data()
-				})
-			})
-			return data
-		},
-		isExist(crime) {
-			return this.$records.some(
-				crm => crm.id === crime.id
-			)
-		},
-		onCrimesAdded(snapShot) {
-			let crimes = this.snapShotToArray(snapShot)
-			crimes = crimes.filter(crm => !this.isExist(crm))
-			this.concatCrimes(crimes)
 		}
 	}
 }

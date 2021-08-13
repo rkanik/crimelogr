@@ -10,6 +10,25 @@ export const _firebaseConfig = {
 	appId: process.env.VUE_APP_FB_APP_ID,
 	measurementId: process.env.VUE_APP_FB_MEASUREMENT_ID,
 }
+export const filterRanges = [
+	{ value: 3, text: '3 Months' },
+	{ value: 6, text: '6 Months' },
+	{ value: 12, text: '13 Months' },
+	{ value: 24, text: '24 Months' },
+	{ value: 36, text: '36 Months' },
+]
+export const filterOptions = [
+	{ value: 'all', text: 'All Crimes' },
+	{ value: 1, text: 'Violent Crimes' },
+	{ value: 2, text: 'Rough Crimes' },
+	{ value: 3, text: 'Non-Violent Crimes' },
+	{ value: 'not-approved', text: 'Not approved' },
+]
+export const countries = [
+	'All Countries',
+	'Nigeria', 'Ghana',
+	'South Africa', 'Kenya'
+]
 export const _crime = {
 	rough: 2,
 	violent: 1,

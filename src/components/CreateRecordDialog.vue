@@ -8,33 +8,7 @@
 		</div>
 
 		<div v-for="(crm, i) in crimes" :key="crm.id" :class="{'tw-mt-3':i}">
-			<h4
-				class="tw-text-base tw-px-3 tw-py-0.5 tw-rounded"
-				:class="{
-					'tw-bg-red-500 tw-text-white': crm.id === crime.violent,
-					'tw-bg-orange-500 tw-text-white': crm.id === crime.rough,
-					'tw-bg-yellow-500': crm.id === crime.nonViolent,
-				}"
-			>{{crm.category}}</h4>
-			<div class="tw-grid tw-grid-cols-2 tw-gap-1 tw-mt-2">
-				<div
-					:key="j"
-					v-for="(subCrime, j) in crm.crimes"
-					class="tw-pb-1 tw-px-2 tw-rounded"
-					:class="{
-						'tw-bg-red-100': crm.id === crime.violent,
-						'tw-bg-orange-100': crm.id === crime.rough,
-						'tw-bg-yellow-100': crm.id === crime.nonViolent,
-					}"
-				>
-					<check-box
-						:color="crm.color"
-						:label="subCrime.type"
-						:value="subCrime.type === record.crime.type"
-						@input="onInputCrime(crm, subCrime)"
-					/>
-				</div>
-			</div>
+			<crime-checkbox :crime="crm" :value="record.type" @input="onInputCrime"></crime-checkbox>
 		</div>
 
 		<div class="mt-4 tw-px-1">
@@ -48,15 +22,17 @@ import { _crime } from '../consts'
 import { DoubleBounce } from 'vue-loading-spinner'
 
 import crimes from '@/data.json'
-import CheckBox from './utils/CheckBox.vue'
+// import CheckBox from './utils/CheckBox.vue'
 import RecordForm from './RecordForm.vue'
+import CrimeCheckbox from './CrimeCheckbox.vue'
 
 export default {
 	name: 'CreateRecordDialog',
 	components: {
-		CheckBox,
+		// CheckBox,
 		DoubleBounce,
-		RecordForm
+		RecordForm,
+		CrimeCheckbox
 	},
 	props: {
 		createRecord: Function
@@ -68,11 +44,9 @@ export default {
 			crime: _crime,
 			loading: false,
 			record: {
-				crime: {
-					type: '',
-					category: '',
-					points: 0
-				}
+				type: '',
+				category: '',
+				points: 0
 			}
 		}
 	},
@@ -82,15 +56,17 @@ export default {
 		}
 	},
 	methods: {
-		onInputCrime({ id, category }, { type, points }) {
-			this.record.crime = {
-				id, type, category, points
+		onInputCrime([{ id, category }, { type, points }]) {
+			this.record = {
+				...this.record,
+				categoryId: id,
+				type, category, points
 			}
 			this.error = ''
 		},
 		async onSubmit(record) {
 
-			if (!this.record.crime.category) {
+			if (!this.record.category) {
 				return (this.error = 'You must have to select a crime type.')
 			}
 			else this.error = ''

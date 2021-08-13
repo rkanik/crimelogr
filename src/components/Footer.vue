@@ -89,7 +89,7 @@ export default {
 			if (!this.$isSubscribed) {
 				return this.toggleSubscribeModal(true)
 			}
-			this.$emit('sos')
+			this.$bvModal.show('modal-sos')
 		}
 	}
 }

@@ -39,10 +39,15 @@ export default {
 	data: () => ({
 		routes: [
 			{
-				name: 'Dashboard',
-				icon: 'columns-gap',
-				path: '/admin'
+				name: 'Home',
+				icon: 'house-door',
+				path: '/home'
 			},
+			// {
+			// 	name: 'Dashboard',
+			// 	icon: 'columns-gap',
+			// 	path: '/admin'
+			// },
 			{
 				name: 'Map',
 				icon: 'map',

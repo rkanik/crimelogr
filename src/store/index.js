@@ -12,6 +12,7 @@ let plugins = [
   createPersistedState({
     key: "__crime_map__",
     paths: [
+      'gpsCountry',
       'Auth', 'Map'
     ]
   })

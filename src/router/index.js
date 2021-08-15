@@ -81,16 +81,17 @@ const router = new VueRouter({
     {
       path: '/admin',
       component: DashboardLayout,
+      redirect: '/admin/map',
       children: [
-        {
-          path: '',
-          name: 'Dashboard',
-          meta: {
-            requiresAuth: true,
-            requireRoles: ['admin', 'super-admin']
-          },
-          component: () => import(`@/views/admin/Dashboard.vue`)
-        },
+        // {
+        //   path: '',
+        //   name: 'Dashboard',
+        //   meta: {
+        //     requiresAuth: true,
+        //     requireRoles: ['admin', 'super-admin']
+        //   },
+        //   component: () => import(`@/views/admin/Dashboard.vue`)
+        // },
         {
           path: 'map',
           name: 'Map',

@@ -81,7 +81,11 @@
 							class="form-control"
 						>
 							<option value>Select country of interest</option>
-							<option v-for="country in countries" :key="country" :value="country">{{country}}</option>
+							<option
+								:key="country.code"
+								:value="country.value"
+								v-for="country in countries"
+							>{{country.text}}</option>
 						</select>
 					</div>
 				</b-card-text>

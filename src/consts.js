@@ -25,18 +25,63 @@ export const filterOptions = [
 	{ value: 'not-approved', text: 'Not approved' },
 ]
 export const countries = [
-	'All Countries',
-	'Nigeria', 'Ghana',
-	'South Africa', 'Kenya'
+	{
+		code: 'NG',
+		text: 'Nigeria',
+		value: 'nigeria',
+		bound: {
+			north: 13.89, south: 4.15,
+			west: 2.69, east: 14.67,
+		},
+		center: {
+			lat: 9.074870,
+			lng: 7.408752
+		}
+	},
+	{
+		code: 'GH',
+		text: 'Ghana',
+		value: 'ghana',
+		bound: {
+			north: 11.18, south: 4.68,
+			west: -3.45, east: 1.20,
+		},
+		center: {
+			lat: 5.555185,
+			lng: -0.211508
+		}
+	},
+	{
+		code: 'KE',
+		text: 'Kenya',
+		value: 'kenya',
+		bound: {
+			north: 5.20, south: -4.78,
+			west: 33.82, east: 42.02,
+		},
+		center: {
+			lat: -1.300243,
+			lng: 36.813572
+		}
+	},
+	{
+		code: 'ZA',
+		text: 'South Africa',
+		value: 'south-africa',
+		bound: {
+			north: -21.80, south: -35.30,
+			west: 16.10, east: 33.23,
+		},
+		center: {
+			lat: -33.922430,
+			lng: 18.423597
+		}
+	},
 ]
 export const _crime = {
 	rough: 2,
 	violent: 1,
 	nonViolent: 3
-}
-export const _nigeriaBounds = {
-	north: 13.89, south: 4.15,
-	west: 2.69, east: 14.67,
 }
 export const _time = (() => {
 	let sec = 1000

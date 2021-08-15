@@ -3,7 +3,7 @@
 		<gmap-map
 			ref="mapRef"
 			:zoom="zoom"
-			:center="myLocation"
+			:center="mapCenter"
 			:map-type-id="mapType"
 			@click="onClickMap"
 			:style="{
@@ -44,24 +44,17 @@
 
 <script>
 import { only } from '../../helpers'
-import { countries, filterOptions, filterRanges } from '../../consts'
 import { mapActions, mapGetters } from 'vuex'
 
 import CrimeFilters from '../../components/CrimeFilters.vue'
+import { countries } from '../../consts'
 
-const initialZoom = 13
+const initialZoom = 3
 
 export default {
 	name: 'Map',
 	components: { CrimeFilters },
 	data: () => ({
-		countries,
-		filterRanges,
-		filterOptions,
-
-		// BOOLEANS
-		filterMenu: false,
-
 		// NULLS
 		map: null,
 		infoWindow: null,
@@ -73,19 +66,19 @@ export default {
 		zoom: initialZoom,
 
 		// OBJECTS
-		myLocation: {
-			"lat": 23.7522082,
-			"lng": 90.3870041
+		mapCenter: {
+			lat: 7.6364427,
+			lng: -1.9057581
 		},
 
 	}),
 	mounted() {
 		this.$refs.mapRef.$mapPromise.then(map => {
 			this.map = map
-			// this.map.setRestriction({
-			// 	latLngBounds: _nigeriaBounds,
-			// 	strictBounds: false,
-			// })
+
+			if (this.$filter.country !== 'all') {
+				this.setMapBoundsAndCenter(this.$filter.country)
+			}
 			this.infoWindow = new window.google.maps.InfoWindow();
 
 			if (this.$route.query.center) {
@@ -94,6 +87,16 @@ export default {
 				this.onSelectPlace({ lat: +lat, lng: +lng })
 			}
 		})
+	},
+	watch: {
+		'$filter.country'(country) {
+			if (!this.map) return
+			if (country === 'all') {
+				this.map.setRestriction(null)
+				this.zoom = initialZoom
+			}
+			else this.setMapBoundsAndCenter(country)
+		}
 	},
 	computed: {
 		...mapGetters('Auth', ['$user', '$isUser']),
@@ -105,6 +108,17 @@ export default {
 	},
 	methods: {
 		...mapActions('Records', ['setFilter', 'deleteRecord']),
+		setMapBoundsAndCenter(filterCountry) {
+			let country = countries.find(country => {
+				return country.value === filterCountry
+			})
+			this.map.setRestriction({
+				latLngBounds: country.bound,
+				strictBounds: false,
+			})
+			this.zoom = initialZoom
+			this.mapCenter = country.center
+		},
 		onClickMap() {
 			this.infoWindow.close()
 		},

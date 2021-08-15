@@ -22,7 +22,7 @@
 				<input
 					type="text"
 					@focus="onExpanded"
-					:placeholder="`Search here (${user.country})`"
+					:placeholder="`Search here (${userCountry})`"
 					v-model="search.keyword"
 					@input="onInputKeyword"
 					class="tw-text-base tw-text-gray-700 tw-w-full tw-bg-transparent tw-h-12 focus:tw-outline-none"
@@ -83,6 +83,7 @@ import { fetchNearbyLocations } from '../gapis/nearby'
 
 import SearchListItem from './SearchListItem.vue'
 import Subheader from './utils/Subheader.vue'
+import { countries } from '../consts'
 
 export default {
 	name: 'SearchBar',
@@ -128,6 +129,11 @@ export default {
 				JSON.stringify(this.nearby.request) ===
 				JSON.stringify(this.centerRadius)
 			)
+		},
+		userCountry() {
+			return countries.find(country => {
+				return country.value === this.user.country
+			}).text
 		}
 	},
 	methods: {

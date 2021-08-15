@@ -1,5 +1,6 @@
-export const fetchNearbyLocations = (map, lat, lng, radius, type) => {
+export const fetchNearbyLocations = async (map, lat, lng, radius, type) => {
 	return new Promise(resolve => {
+
 		const request = {
 			type, radius,
 			openNow: false,

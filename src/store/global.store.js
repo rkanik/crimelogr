@@ -3,14 +3,16 @@ import { createMutations } from "./store.helpers"
 
 const initialState = () => ({
 	loading: false,
-	subscribeModal: false
+	subscribeModal: false,
+	gpsCountry: null
 })
 
 export const state = initialState()
 export const mutations = createMutations('SET')
 export const getters = {
 	$loading: s => s.loading,
-	$subscribeModal: s => s.subscribeModal
+	$subscribeModal: s => s.subscribeModal,
+	$gpsCountry: s => s.gpsCountry
 }
 
 export const actions = {

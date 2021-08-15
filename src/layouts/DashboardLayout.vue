@@ -81,7 +81,7 @@ export default {
 					.orderBy('createdAt', 'desc')
 					.orderBy('updatedAt', 'desc')
 
-				if (filter.country !== 'All Countries') {
+				if (filter.country !== 'all') {
 					crimesQuery = crimesQuery.where('country', '==', filter.country)
 				}
 				if (filter.type === 'not-approved') {
@@ -112,7 +112,7 @@ export default {
 			'setRecords', 'pushCrime', 'updateCrime'
 		]),
 		doesSatisfyFilter(crime, filter) {
-			if (filter.country !== 'All Countries' && crime.country !== filter.country) return false
+			if (filter.country !== 'all' && crime.country !== filter.country) return false
 			if (filter.type === 'not-approved' && !crime.confirmedBy) return false
 			else if (filter.type !== 'all' && filter.type !== crime.categoryId) return false
 			if (crime.createdAt < Date.now() - (_time.month * filter.range)) return false
@@ -126,7 +126,7 @@ export default {
 				crm => crm.id === crime.id
 			)
 		},
-		
+
 	},
 }
 </script>

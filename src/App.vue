@@ -24,6 +24,7 @@ import Auth from "@/firebase/auth"
 import { mapActions, mapGetters } from 'vuex'
 import RotateSquare3 from 'vue-loading-spinner/src/components/RotateSquare3.vue'
 import { Users } from './firebase/init'
+import { getCountry } from './helpers'
 export default {
 	name: 'App',
 	components: {
@@ -33,7 +34,7 @@ export default {
 		loading: false,
 		appHeight: window.innerHeight
 	}),
-	created() {
+	async created() {
 		this.loading = true
 		Auth.onStateChanged(user => {
 			this.$store.commit('Auth/SET', {
@@ -62,6 +63,9 @@ export default {
 				})
 			}
 		})
+
+		let country = await getCountry()
+		this.$store.commit('SET', { gpsCountry: country })
 	},
 	mounted() { window.addEventListener('resize', this.onResize) },
 	beforeDestroy() { window.removeEventListener('resize', this.onResize) },

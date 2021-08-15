@@ -4,7 +4,7 @@
 			<dropdown
 				:outlined="outlined"
 				v-model="filter.country"
-				:items="countries"
+				:items="[{value:'all', text:'All countries'}].concat(countries)"
 				:class="{'tw-shadow':!outlined}"
 				:togglerClass="togglerClass"
 			></dropdown>
@@ -32,7 +32,7 @@
 			<template #toggler="{ on }">
 				<icon-button v-on="on" icon="funnel" class="tw-h-10 tw-w-10 tw-bg-green-600 tw-text-white"></icon-button>
 			</template>
-			<dropdown v-model="filter.country" :items="countries"></dropdown>
+			<dropdown v-model="filter.country" :items="[{value:'all', text:'All countries'}].concat(countries)"></dropdown>
 			<dropdown v-model="filter.type" :items="filterOptions" class="tw-border-t tw-border-gray-300"></dropdown>
 			<dropdown v-model="filter.range" :items="filterRanges" class="tw-border-t tw-border-gray-300"></dropdown>
 		</Menu>

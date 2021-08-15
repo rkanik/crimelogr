@@ -6,7 +6,7 @@ const initalState = () => ({
 	filter: {
 		range: 12, // range in months
 		type: 'all',
-		country: 'All Countries',
+		country: 'all',
 	}
 })
 
@@ -26,7 +26,7 @@ const actions = {
 		DB.getBuildingRecords(payload), (records = []) => {
 			commit('SET', { records })
 		}),
-	deleteRecord: async ({ commit },  doc) => {
+	deleteRecord: async ({ commit }, doc) => {
 		await doc.ref.delete()
 		commit('DELETE', ['records', doc.id])
 	},

@@ -84,7 +84,7 @@ export default {
 					.orderBy('confirmedAt', 'desc')
 
 				// FILTER BY COUNTRY AND DATE
-				if (filter.country !== 'All Countries') crimesQuery = crimesQuery.where('country', '==', filter.country)
+				if (filter.country !== 'all') crimesQuery = crimesQuery.where('country', '==', filter.country)
 				crimesQuery = crimesQuery.where('confirmedAt', '>=', Date.now() - (_time.month * filter.range))
 
 				if (this.$isUser) crimesQuery = crimesQuery.where('confirmedAt', '!=', null)
@@ -126,7 +126,7 @@ export default {
 		},
 		doesSatisfyFilter(crime, filter) {
 			if (crime.createdAt < Date.now() - (_time.month * filter.range)) return false
-			if (filter.country !== 'All Countries' && crime.country !== filter.country) return false
+			if (filter.country !== 'all' && crime.country !== filter.country) return false
 			if (this.$isUser && !crime.confirmedAt && crime.recordedBy !== this.$user.userId) return false
 			return true
 		},

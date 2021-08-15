@@ -212,8 +212,7 @@ import CreateRecordDialog from '@/components/CreateRecordDialog'
 import MapTypes from '../components/MapTypes.vue'
 import Menu from '../components/utils/Menu.vue'
 import { only } from '../helpers'
-// import { _nigeriaBounds, _time } from '../consts'
-import { filterRanges, _time } from '../consts'
+import { countries, filterRanges, _time } from '../consts'
 import crimes from '@/data.json'
 import IconButton from '../components/utils/IconButton.vue'
 import Dropdown from '../components/utils/Dropdown.vue'
@@ -289,10 +288,7 @@ export default {
 	mounted() {
 		this.$refs.mapRef.$mapPromise.then(map => {
 			this.map = map
-			// this.map.setRestriction({
-			// 	latLngBounds: _nigeriaBounds,
-			// 	strictBounds: false,
-			// })
+			this.setMapBoundsAndCenter(this.$user.country)
 			this.infoWindow = new window.google.maps.InfoWindow();
 
 			if (this.$route.query.center) {
@@ -302,7 +298,14 @@ export default {
 			}
 		})
 	},
+	watch: {
+		'$user.country'(country) {
+			if (!this.map) return
+			this.setMapBoundsAndCenter(country)
+		}
+	},
 	computed: {
+		...mapGetters(['$gpsCountry']),
 		...mapGetters('Auth', ['$user', '$isSubscribed']),
 		...mapGetters('Records', ['$records', '$filter']),
 		...mapGetters('Map', ['$radius', '$circle']),
@@ -390,6 +393,20 @@ export default {
 			})
 			return res
 		},
+		setMapBoundsAndCenter(filterCountry) {
+			let country = countries.find(country => {
+				return country.value === filterCountry
+			})
+			this.map.setRestriction({
+				latLngBounds: country.bound,
+				strictBounds: false,
+			})
+			this.zoom = initialZoom
+			this.mapCenter = country.center
+			if (country.code !== this.$gpsCountry) {
+				this.circle.location = country.center
+			}
+		},
 		onChangeRadius(value) {
 			if (!this.$isSubscribed && value > 2000) {
 				return this.toggleSubscribeModal(true)
@@ -474,7 +491,13 @@ export default {
 		},
 		updateMyLocation({ updateCircle = false } = {}) {
 			navigator.geolocation.getCurrentPosition(position => {
-				this.myLocation = {
+				let country = countries.find(country => {
+					return country.value === this.$user.country
+				})
+				if (country !== this.$gpsCountry) {
+					this.myLocation = country.center
+				}
+				else this.myLocation = {
 					lat: position.coords.latitude,
 					lng: position.coords.longitude,
 				}

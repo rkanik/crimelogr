@@ -126,7 +126,6 @@ const router = new VueRouter({
 router.beforeEach((to, _, next) => {
   const isAuth = store.getters['Auth/$isAuth']
   const authRole = store.getters['Auth/$authRole']
-  console.log('authRole', authRole)
 
   // Redirect to login if not logged in
   const requiresAuth = to.matched.some(res => res.meta.requiresAuth)

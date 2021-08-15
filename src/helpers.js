@@ -4,6 +4,7 @@ export const miniId = (len = 3) =>
 		.slice(len <= 10 ? -len : -10);
 
 export const snapShotToArray = snapShot => {
+	if(snapShot.empty) return []
 	let data = []
 	snapShot.forEach(doc => {
 		data.push({

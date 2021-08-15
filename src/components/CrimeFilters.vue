@@ -6,17 +6,20 @@
 				v-model="filter.country"
 				:items="countries"
 				:class="{'tw-shadow':!outlined}"
+				:togglerClass="togglerClass"
 			></dropdown>
 			<dropdown
 				:outlined="outlined"
 				v-model="filter.type"
 				:items="filterOptions"
+				:togglerClass="togglerClass"
 				:class="{'tw-shadow':!outlined}"
 			></dropdown>
 			<dropdown
 				:outlined="outlined"
 				v-model="filter.range"
 				:items="filterRanges"
+				:togglerClass="togglerClass"
 				:class="{'tw-shadow':!outlined}"
 			></dropdown>
 		</div>
@@ -46,7 +49,8 @@ export default {
 	name: 'CrimeFilters',
 	components: { Dropdown, Menu, IconButton },
 	props: {
-		outlined: Boolean
+		outlined: Boolean,
+		togglerClass: String,
 	},
 	data: () => ({
 		countries,

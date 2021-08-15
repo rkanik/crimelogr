@@ -35,7 +35,10 @@
 				"
 			/>
 		</gmap-map>
-		<crime-filters class="tw-absolute tw-top-4 tw-right-4"></crime-filters>
+		<crime-filters
+			toggler-class="tw-bg-green-600 tw-text-white"
+			class="tw-absolute tw-top-4 tw-right-4"
+		></crime-filters>
 	</div>
 </template>
 
@@ -101,7 +104,7 @@ export default {
 		}
 	},
 	methods: {
-		...mapActions('Records', ['setFilter']),
+		...mapActions('Records', ['setFilter', 'deleteRecord']),
 		onClickMap() {
 			this.infoWindow.close()
 		},
@@ -127,7 +130,7 @@ export default {
 			btn.classList.add('btn', 'btn-danger', 'btn-sm', 'm-1')
 			btn.addEventListener('click', async () => {
 				await this.deleteRecord(only(rec, ['id', 'ref']))
-				this.hideInfo()
+				this.infoWindow.close()
 			})
 
 			// Wrapper

@@ -1,9 +1,18 @@
 <template>
 	<b-container class="tw-py-4 tw-flex-1 scrollbar-y">
 		<h5 class="tw-mb-4 tw-text-xl tw-font-bold">Crime Summary(for selected radius)</h5>
-		<div :key="crime.id" v-for="(crime,crimeIndex) in crimeCategories">
+		<div class="tw-grid tw-gap-1 tw-grid-cols-5 tw-mb-4">
+			<button
+				:key="rangeIndex"
+				v-for="(range, rangeIndex) in filterRanges"
+				@click="onClickFilterRange(range)"
+				:class="[$filter.range === range.value ? 'tw-bg-green-600 tw-text-white' : 'tw-bg-white']"
+				class="tw-border tw-rounded tw-text-sm tw-h-7 tw-border-gray-300"
+			>{{range.text.replace(' Months', 'mths')}}</button>
+		</div>
+		<div :key="crime.id" v-for="(crime, crimeIndex) in crimeCategories">
 			<div
-				:style="{ backgroundColor: crime.color }"
+				:style="{ backgroundColor: crime.bgColor }"
 				class="tw-text-base tw-font-semibold tw-px-2 tw-py-1"
 				:class="[crimeIndex === 2 ?'tw-text-black':'tw-text-white']"
 			>{{ crime.category }}</div>
@@ -18,7 +27,7 @@
 			</div>
 		</div>
 		<h5
-			class="tw-mb-4 tw-text-lg tw-font-bold tw-bg-blue-500 tw-text-white tw-mt-3 tw-px-3 tw-py-1"
+			class="tw-mb-4 tw-text-lg tw-font-bold tw-bg-green-600 tw-text-white tw-mt-3 tw-px-3 tw-py-1"
 		>Grand Total: {{crimesInsideRadius.length}}</h5>
 	</b-container>
 </template>
@@ -26,16 +35,20 @@
 <script>
 import crimes from '@/data.json'
 import { only } from '../helpers'
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
+import { filterRanges } from '../consts'
 export default {
 	name: 'CrimeSummary',
+	data: () => ({
+		filterRanges
+	}),
 	computed: {
 		...mapGetters('Map', ['$radius', '$circle']),
-		...mapGetters('Records', ['$records']),
+		...mapGetters('Records', ['$records', '$filter']),
 		crimeCategories() {
 			return crimes.map(
 				crime => only(crime, [
-					'id', 'color', 'category'
+					'id', 'color', 'bgColor', 'category'
 				])
 			)
 		},
@@ -49,6 +62,13 @@ export default {
 		}
 	},
 	methods: {
+		...mapActions('Records', ['setFilter']),
+		onClickFilterRange(range) {
+			this.setFilter({
+				...this.$filter,
+				range: range.value
+			})
+		},
 		getTotalNumber(id) {
 			return this.crimesInsideRadius.reduce(
 				(total, c) => c.categoryId === id

@@ -2,6 +2,7 @@
 	{
 		"id": 1,
 		"color": "#f44336",
+		"bgColor": "#f44336",
 		"category": "Violent Crimes",
 		"crimes": [
 			{
@@ -49,6 +50,7 @@
 	{
 		"id": 2,
 		"color": "#ff9800",
+		"bgColor": "#ff9800",
 		"category": "Rough Crimes",
 		"crimes": [
 			{
@@ -104,6 +106,7 @@
 	{
 		"id": 3,
 		"color": "#313131",
+		"bgColor": "#ffeb3b",
 		"category": "Non-Violent Crimes",
 		"crimes": [
 			{

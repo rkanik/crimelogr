@@ -17,9 +17,9 @@ import Footer from '@/components/Footer.vue'
 import RouteWrapper from '@/components/utils/RouteWrapper'
 import SOSDialog from '../components/SOSDialog.vue'
 import { mapActions, mapGetters } from 'vuex'
-import Auth from "@/firebase/auth"
 import { Crimes } from '../firebase/init'
 import { snapShotToArray } from '../helpers'
+import { _time } from '../consts'
 export default {
 	name: 'AppLayout',
 	components: {
@@ -27,48 +27,81 @@ export default {
 		RouteWrapper,
 		SOSDialog
 	},
-	computed: {
-		...mapGetters('Records', ['$records']),
-	},
+	data: () => ({
+		unsubscribeCrimes: null,
+	}),
 	created() {
-		Auth.onStateChanged(user => {
-			if (!user) return
 
-			const isUser = user.role === 'user'
-
-			// Confirmed crimes
-			let confirmedCrimes = Crimes.where('confirmedBy', '!=', null)
-			confirmedCrimes.get().then(this.onCrimesAdded)
-
-			// UnConfirmed crimes
-			let unConfirmedCrimes = Crimes.where('confirmedBy', '==', null)
-			if (isUser) unConfirmedCrimes = unConfirmedCrimes.where('recordedBy', '==', user.userId)
-			unConfirmedCrimes.get().then(this.onCrimesAdded)
-
-			// New crime added
-			let newCrimes = Crimes.limit(1).orderBy('createdAt', 'desc')
-			newCrimes.onSnapshot(snapShot => {
-				if (snapShot.empty) return
-				let [crime] = snapShotToArray(snapShot)
-				if (isUser && crime.recordedBy !== user.userId && !crime.confirmedAt) return
-				if (this.isExist(crime)) return
-				this.pushCrime(crime)
+		// ALL UNCONFIRMED CRIMES
+		!this.$isUser && Crimes
+			.where('confirmedAt', '==', null).get()
+			.then(snapShot => {
+				let crimes = snapShotToArray(snapShot)
+				this.concatCrimes(crimes)
 			})
 
-			// On Confirmed
-			Crimes.limit(1)
-				.where('confirmedAt', '!=', null)
-				.orderBy('confirmedAt', 'desc')
-				.onSnapshot(snapShot => {
-					if (snapShot.empty) return
-					let [crime] = snapShotToArray(snapShot)
-					this.updateCrime(crime)
-				})
+		// USER'S UNCONFIRMED CRIMES
+		this.$isUser && Crimes
+			.where('recordedBy', '==', this.$user.userId)
+			.where('confirmedAt', '==', null).get()
+			.then(snapShot => {
+				let crimes = snapShotToArray(snapShot)
+				this.concatCrimes(crimes)
+			})
 
-		})
+		// ON NEW CRIME
+		if (this.unsubscribeCrimes) this.unsubscribeCrimes()
+		this.unsubscribeCrimes = Crimes
+			.limit(1)
+			.orderBy('updatedAt', 'desc')
+			.onSnapshot(snapShot => {
+				if (!snapShot.size) return
+				let [crime] = snapShotToArray(snapShot)
+				if (!this.doesSatisfyFilter(crime, this.$filter)) return
+				this.isExist(crime)
+					? this.updateCrime(crime)
+					: this.pushCrime(crime)
+			})
+	},
+	computed: {
+		...mapGetters('Auth', ['$user', '$isUser']),
+		...mapGetters('Records', ['$records', '$filter']),
+	},
+	watch: {
+		'$user.country': {
+			immediate: true,
+			handler(country) {
+				this.setFilter({
+					...this.$filter, country
+				})
+			}
+		},
+		$filter: {
+			deep: true,
+			immediate: true,
+			handler(filter) {
+				let crimesQuery = Crimes
+					.orderBy('confirmedAt', 'desc')
+
+				// FILTER BY COUNTRY AND DATE
+				if (filter.country !== 'All Countries') crimesQuery = crimesQuery.where('country', '==', filter.country)
+				crimesQuery = crimesQuery.where('confirmedAt', '>=', Date.now() - (_time.month * filter.range))
+
+				if (this.$isUser) crimesQuery = crimesQuery.where('confirmedAt', '!=', null)
+
+				// GET ALL CRIMES
+				crimesQuery
+					.limit(100).get()
+					.then(snapShot => {
+						let crimes = snapShotToArray(snapShot)
+						this.setRecords(crimes)
+					})
+			}
+		}
 	},
 	methods: {
 		...mapActions('Records', [
+			'setRecords', 'setFilter',
 			'pushCrime', 'concatCrimes', 'updateCrime'
 		]),
 		async onClickSoS({ type }) {
@@ -79,9 +112,6 @@ export default {
 					text: `This is an SOS message to let you know i am involved in (or witnessing) the following type of crime: ${type}. My current location is here: ${latitude},${longitude}.\n\n*** This SOS alert was generated from crimelogr app. You can learn more about it and download it from www.crimelogr.com ***`,
 					url: `${location.origin}/home?center=${latitude},${longitude}`,
 				})
-					.catch(err => {
-						console.log('Share cancelled', err)
-					})
 			})
 		},
 		isExist(crime) {
@@ -93,7 +123,13 @@ export default {
 			let crimes = snapShotToArray(snapShot)
 			crimes = crimes.filter(crm => !this.isExist(crm))
 			this.concatCrimes(crimes)
-		}
+		},
+		doesSatisfyFilter(crime, filter) {
+			if (crime.createdAt < Date.now() - (_time.month * filter.range)) return false
+			if (filter.country !== 'All Countries' && crime.country !== filter.country) return false
+			if (this.$isUser && !crime.confirmedAt && crime.recordedBy !== this.$user.userId) return false
+			return true
+		},
 	}
 }
 </script>

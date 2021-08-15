@@ -49,10 +49,26 @@ export default {
 		RouteWrapperY
 	},
 	data: () => ({
+		unsubscribeCrimes: null,
 		sidebar: {
 			expanded: false
 		}
 	}),
+	created() {
+		// ON NEW CRIME
+		if (this.unsubscribeCrimes) this.unsubscribeCrimes()
+		this.unsubscribeCrimes = Crimes
+			.limit(1)
+			.orderBy('updatedAt', 'desc')
+			.onSnapshot(snapShot => {
+				if (!snapShot.size) return
+				let [crime] = snapShotToArray(snapShot)
+				if (!this.doesSatisfyFilter(crime, this.$filter)) return
+				this.isExist(crime)
+					? this.updateCrime(crime)
+					: this.pushCrime(crime)
+			})
+	},
 	watch: {
 		'$route.path'() {
 			this.sidebar.expanded = false
@@ -61,8 +77,6 @@ export default {
 			deep: true,
 			immediate: true,
 			handler(filter) {
-				// console.log('onChangeFilter', filter)
-				// GET ALL CRIMES
 				let crimesQuery = Crimes
 					.orderBy('createdAt', 'desc')
 					.orderBy('updatedAt', 'desc')
@@ -78,24 +92,13 @@ export default {
 				}
 				crimesQuery = crimesQuery.where('createdAt', '>=', Date.now() - (_time.month * filter.range))
 
+				// GET ALL CRIMES
 				crimesQuery
 					.limit(100).get()
 					.then(snapShot => {
 						let crimes = !snapShot.empty
 							? snapShotToArray(snapShot) : []
 						this.setRecords(crimes)
-					})
-
-				// ON NEW CRIME
-				crimesQuery
-					.limit(1)
-					.onSnapshot(snapShot => {
-						if (!snapShot.size) return
-						let [crime] = snapShotToArray(snapShot)
-						console.log('ON NEW CRIME', crime)
-						this.isExist(crime)
-							? this.updateCrime(crime)
-							: this.pushCrime(crime)
 					})
 			}
 		}
@@ -108,6 +111,13 @@ export default {
 		...mapActions('Records', [
 			'setRecords', 'pushCrime', 'updateCrime'
 		]),
+		doesSatisfyFilter(crime, filter) {
+			if (filter.country !== 'All Countries' && crime.country !== filter.country) return false
+			if (filter.type === 'not-approved' && !crime.confirmedBy) return false
+			else if (filter.type !== 'all' && filter.type !== crime.categoryId) return false
+			if (crime.createdAt < Date.now() - (_time.month * filter.range)) return false
+			return true
+		},
 		goto(path) {
 			this.$router.push(path)
 		},
@@ -115,7 +125,8 @@ export default {
 			return this.$records.some(
 				crm => crm.id === crime.id
 			)
-		}
+		},
+		
 	},
 }
 </script>

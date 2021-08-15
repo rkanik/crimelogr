@@ -1,24 +1,29 @@
 <template>
-	<div>
-		<form action @submit.prevent="onSignIn">
-			<p>
-				Don't have an account?
-				<router-link :to="{ name: 'Register' }">Register</router-link>
-			</p>
-			<h2>Login</h2>
-			<p v-if="error" class="alert alert-danger" role="alert">{{ error }}</p>
-			<div class="form-group">
-				<label for>Email</label>
-				<input type="email" v-model="email" class="form-control" placeholder="Email" required />
-			</div>
-			<br />
-			<div class="form-group">
-				<label for>Password</label>
-				<input type="password" v-model="password" class="form-control" placeholder="Password" required />
-			</div>
-			<br />
-			<button class="btn btn-primary" :disabled="processing">Sign In</button>
-		</form>
+	<div class="tw-py-5 md:tw-py-10 lg:tw-py-12 xl:tw-py-16">
+		<b-card class="md:tw-p-5">
+			<div class="tw-text-base">Welcome to CrimeLogr</div>
+			<h3 class="tw-text-2xl">Login with your email and password</h3>
+			<hr />
+			<form action @submit.prevent="onSignIn">
+				<p v-if="error" class="alert alert-danger" role="alert">{{ error }}</p>
+
+				<div class="form-group">
+					<label for>Email</label>
+					<input type="email" v-model="email" class="form-control" placeholder="Email" required />
+				</div>
+
+				<div class="form-group tw-mt-4">
+					<label for>Password</label>
+					<input type="password" v-model="password" class="form-control" placeholder="Password" required />
+				</div>
+
+				<button class="btn btn-success tw-mt-8" :disabled="processing">Sign In</button>
+				<p class="mt-2">
+					<span class="tw-mr-1">Don't have an account?</span>
+					<router-link :to="{ name: 'Register' }" class="tw-text-green-500">Register Now</router-link>
+				</p>
+			</form>
+		</b-card>
 	</div>
 </template>
 

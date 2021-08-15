@@ -74,6 +74,20 @@
 
 		<map-types v-model="mapType" class="tw-absolute tw-right-3 tw-top-18" />
 
+		<dropdown
+			:icon-button="true"
+			v-model="filter.range"
+			:items="filterRanges"
+			class="tw-shadow tw-absolute tw-right-3 tw-top-32"
+		>
+			<template #toggler="{on,text}">
+				<button
+					v-on="on"
+					class="tw-bg-green-600 tw-text-white tw-whitespace-nowrap tw-px-2 tw-rounded tw-h-11 tw-shadow"
+				>{{text.replace(' Months', 'mths')}}</button>
+			</template>
+		</dropdown>
+
 		<Menu v-model="radiusMenu" class="tw-absolute tw-left-3 tw-top-18">
 			<template #toggler="{on}">
 				<button
@@ -141,20 +155,18 @@
 				:class="[circle.draggable ? 'tw-bg-green-600' : 'tw-bg-gray-500']"
 			></icon-button>
 			<icon-button class="tw-mt-2 tw-bg-green-600 tw-text-white" @click="onClickCurrentLocation">
-				<template #icon>
-					<svg viewBox="0 0 91 91" class="tw-h-11 tw-w-11">
-						<g>
-							<path
-								d="M35.297,39.05v8.302h3.4V39.05c0-3.646,2.965-6.612,6.611-6.612h3.654c3.648,0,6.615,2.966,6.615,6.612   v8.302h3.4V39.05c0-4.066-2.441-7.568-5.934-9.135c1.422-1.477,2.303-3.479,2.303-5.688c0-4.527-3.684-8.211-8.211-8.211   s-8.211,3.684-8.211,8.211c0,2.208,0.881,4.211,2.303,5.688C37.738,31.481,35.297,34.982,35.297,39.05z M47.137,19.417   c2.652,0,4.811,2.158,4.811,4.811s-2.158,4.81-4.811,4.81s-4.811-2.157-4.811-4.81S44.484,19.417,47.137,19.417z"
-								fill="white"
-							/>
-							<path
-								d="M54.313,49.808v-9.953h-3.4v21.069c0,0.563-0.475,1.037-1.039,1.037c-0.561,0-1.035-0.475-1.035-1.037   V49.597h-3.4v11.327c0,0.563-0.475,1.037-1.037,1.037s-1.037-0.475-1.037-1.037V39.854h-3.4v9.953   c-9.076,1.442-15.32,5.418-16.414,10.374h-2.723v3.4h2.781c1.568,5.815,10.488,10.218,21.83,10.62v3.639h3.4v-3.639   c11.34-0.402,20.26-4.805,21.828-10.62h3.025v-3.4h-2.967C69.631,55.226,63.389,51.25,54.313,49.808z M48.838,70.794v-1.787h-3.4   v1.787c-9.439-0.364-16.328-3.699-18.172-7.212h5.594v-3.4h-5.762c1.303-3.051,6.299-5.753,12.865-6.915v7.657   c0,2.446,1.99,4.438,4.438,4.438c1.037,0,1.98-0.373,2.736-0.972c0.756,0.599,1.699,0.972,2.736,0.972   c2.449,0,4.439-1.991,4.439-4.438v-7.657c6.564,1.162,11.563,3.864,12.863,6.915h-5.52v3.4h5.352   C65.166,67.095,58.275,70.43,48.838,70.794z"
-								fill="white"
-							/>
-						</g>
-					</svg>
-				</template>
+				<svg viewBox="0 0 91 91" class="tw-h-11 tw-w-11">
+					<g>
+						<path
+							d="M35.297,39.05v8.302h3.4V39.05c0-3.646,2.965-6.612,6.611-6.612h3.654c3.648,0,6.615,2.966,6.615,6.612   v8.302h3.4V39.05c0-4.066-2.441-7.568-5.934-9.135c1.422-1.477,2.303-3.479,2.303-5.688c0-4.527-3.684-8.211-8.211-8.211   s-8.211,3.684-8.211,8.211c0,2.208,0.881,4.211,2.303,5.688C37.738,31.481,35.297,34.982,35.297,39.05z M47.137,19.417   c2.652,0,4.811,2.158,4.811,4.811s-2.158,4.81-4.811,4.81s-4.811-2.157-4.811-4.81S44.484,19.417,47.137,19.417z"
+							fill="white"
+						/>
+						<path
+							d="M54.313,49.808v-9.953h-3.4v21.069c0,0.563-0.475,1.037-1.039,1.037c-0.561,0-1.035-0.475-1.035-1.037   V49.597h-3.4v11.327c0,0.563-0.475,1.037-1.037,1.037s-1.037-0.475-1.037-1.037V39.854h-3.4v9.953   c-9.076,1.442-15.32,5.418-16.414,10.374h-2.723v3.4h2.781c1.568,5.815,10.488,10.218,21.83,10.62v3.639h3.4v-3.639   c11.34-0.402,20.26-4.805,21.828-10.62h3.025v-3.4h-2.967C69.631,55.226,63.389,51.25,54.313,49.808z M48.838,70.794v-1.787h-3.4   v1.787c-9.439-0.364-16.328-3.699-18.172-7.212h5.594v-3.4h-5.762c1.303-3.051,6.299-5.753,12.865-6.915v7.657   c0,2.446,1.99,4.438,4.438,4.438c1.037,0,1.98-0.373,2.736-0.972c0.756,0.599,1.699,0.972,2.736,0.972   c2.449,0,4.439-1.991,4.439-4.438v-7.657c6.564,1.162,11.563,3.864,12.863,6.915h-5.52v3.4h5.352   C65.166,67.095,58.275,70.43,48.838,70.794z"
+							fill="white"
+						/>
+					</g>
+				</svg>
 			</icon-button>
 		</div>
 
@@ -172,7 +184,7 @@
 		<div class="tw-absolute tw-inset-x-3 tw-bottom-5 tw-flex tw-justify-center tw-space-x-3">
 			<button
 				v-b-modal.modal-record-crime
-				class="tw-flex-none tw-flex tw-items-center tw-justify-center tw-h-11 tw-rounded-md tw-transition-all tw-bg-red-500 tw-opacity-80 tw-text-white tw-space-x-1 tw-pl-2 tw-pr-4 tw-text-sm"
+				class="tw-flex-none tw-flex tw-items-center tw-justify-center tw-h-11 tw-rounded-md tw-transition-all tw-bg-red-500 tw-text-white tw-space-x-1 tw-pl-2 tw-pr-4 tw-text-sm"
 			>
 				<svg height="24" width="24" class="tw-transform tw-scale-75">
 					<path d="M0 0h24v24H0V0z" fill="none" />
@@ -201,9 +213,10 @@ import MapTypes from '../components/MapTypes.vue'
 import Menu from '../components/utils/Menu.vue'
 import { only } from '../helpers'
 // import { _nigeriaBounds, _time } from '../consts'
-import { _time } from '../consts'
+import { filterRanges, _time } from '../consts'
 import crimes from '@/data.json'
 import IconButton from '../components/utils/IconButton.vue'
+import Dropdown from '../components/utils/Dropdown.vue'
 
 const initialZoom = 13
 const iLatLng = () => ({ lat: 0, lng: 0 })
@@ -215,10 +228,12 @@ export default {
 		SearchBar,
 		CreateRecordDialog,
 		MapTypes,
-		IconButton
+		IconButton,
+		Dropdown
 	},
-
 	data: () => ({
+		filterRanges,
+
 		// NULLS
 		map: null,
 
@@ -289,8 +304,12 @@ export default {
 	},
 	computed: {
 		...mapGetters('Auth', ['$user', '$isSubscribed']),
-		...mapGetters('Records', ['$records']),
+		...mapGetters('Records', ['$records', '$filter']),
 		...mapGetters('Map', ['$radius', '$circle']),
+		filter: {
+			get() { return this.$filter },
+			set(v) { this.setFilter(v) }
+		},
 		radius: {
 			get() { return this.$radius },
 			set(v) { this.setRadius(v) }
@@ -324,7 +343,7 @@ export default {
 		isNoPsi() {
 			if (!this.psi) return true
 			return this.psi.reduce(
-				(total, category) => total + category.psi, 0
+				(total, category) => total + +category.psi, 0
 			) === 0
 		},
 		pointsInsideCircle() {
@@ -342,7 +361,8 @@ export default {
 					rec.latLng, this.radius
 				)
 			}))
-		}
+		},
+
 	},
 	methods: {
 		...mapActions(['toggleSubscribeModal']),
@@ -458,7 +478,7 @@ export default {
 					lat: position.coords.latitude,
 					lng: position.coords.longitude,
 				}
-				this.mapCenter = { ...this.circle.location }
+				!this.mapCenter.lat && (this.mapCenter = { ...this.circle.location })
 				if (updateCircle) {
 					this.circle = {
 						...this.circle,

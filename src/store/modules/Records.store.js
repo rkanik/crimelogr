@@ -4,7 +4,7 @@ import { createMutations, handle } from '../store.helpers'
 const initalState = () => ({
 	records: [],
 	filter: {
-		range: 3, // range in months
+		range: 12, // range in months
 		type: 'all',
 		country: 'All Countries',
 	}
@@ -22,17 +22,11 @@ const actions = {
 	createRecord: (_, payload) => handle(
 		DB.addBuildingRecord(payload)
 	),
-	// createRecord: ({ commit }, payload) => handle(
-	// 	DB.addBuildingRecord(payload), record => {
-	// 		commit('PUSH', ['records', {
-	// 			...record, ...payload
-	// 		}])
-	// 	}),
 	getRecords: ({ commit }, payload) => handle(
 		DB.getBuildingRecords(payload), (records = []) => {
 			commit('SET', { records })
 		}),
-	deleteRecord: async ({ commit }, doc) => {
+	deleteRecord: async ({ commit },  doc) => {
 		await doc.ref.delete()
 		commit('DELETE', ['records', doc.id])
 	},

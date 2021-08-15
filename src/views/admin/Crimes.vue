@@ -68,8 +68,8 @@
 						</div>
 					</div>
 					<div>
-						<div class="tw-uppercase tw-text-gray-500 tw-text-xs">Location Coordinates</div>
-						<div>{{row.item.latLng.lat}}, {{row.item.latLng.lng}}</div>
+						<div class="tw-uppercase tw-text-gray-500 tw-text-xs">Country</div>
+						<div>{{row.item.country}}</div>
 					</div>
 					<div>
 						<div class="tw-uppercase tw-text-gray-500 tw-text-xs">When it happended</div>
@@ -90,6 +90,10 @@
 					<div>
 						<div class="tw-uppercase tw-text-gray-500 tw-text-xs">Recorded At</div>
 						<div>{{$m(row.item.createdAt).format('DD/MM/YYYY hh:mm A')}}</div>
+					</div>
+					<div class="tw-col-span-2">
+						<div class="tw-uppercase tw-text-gray-500 tw-text-xs">Location Coordinates</div>
+						<div>{{row.item.latLng.lat}}, {{row.item.latLng.lng}}</div>
 					</div>
 				</div>
 			</template>
@@ -125,7 +129,7 @@
 								<b-list-group-item
 									@click="toggleApprove(row.item)"
 								>{{ row.item.confirmedBy ? 'Disapprove' : 'Approve'}}</b-list-group-item>
-								<b-list-group-item @click="onDeleteCrime">Delete</b-list-group-item>
+								<b-list-group-item @click="onDeleteCrime(row.item)">Delete</b-list-group-item>
 							</b-list-group>
 						</div>
 					</Menu>
@@ -154,7 +158,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import CrimeFilters from '../../components/CrimeFilters.vue'
 import CheckBox from '../../components/utils/CheckBox.vue'
 import IconButton2 from '../../components/utils/IconButton2.vue'
@@ -223,6 +227,7 @@ export default {
 		}
 	},
 	methods: {
+		...mapActions('Records', ['deleteRecord']),
 		async onApproveSelected() {
 			for (let id of this.selection) {
 				let record = this.filterredCrimes.find(
@@ -248,7 +253,6 @@ export default {
 			else this.selection = []
 		},
 		onToggleSelection(record) {
-			console.log('onToggleSelection', record)
 			if (this.selection.includes(record.id)) {
 				this.selection = this.selection.filter(
 					id => id !== record.id
@@ -292,7 +296,7 @@ export default {
 		},
 		onDeleteCrime(crime) {
 			if (confirm(`Are you sure to delete`)) {
-				crime.ref.delete()
+				this.deleteRecord(crime)
 			}
 		}
 	}

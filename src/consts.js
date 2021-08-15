@@ -13,7 +13,7 @@ export const _firebaseConfig = {
 export const filterRanges = [
 	{ value: 3, text: '3 Months' },
 	{ value: 6, text: '6 Months' },
-	{ value: 12, text: '13 Months' },
+	{ value: 12, text: '12 Months' },
 	{ value: 24, text: '24 Months' },
 	{ value: 36, text: '36 Months' },
 ]

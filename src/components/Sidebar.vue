@@ -18,6 +18,7 @@
 		</div>
 		<div class="tw-h-12 tw-flex tw-items-center">
 			<button
+				@click="onSignOut"
 				class="tw-flex tw-items-center tw-space-x-2 hover:tw-text-red-500 tw-transition-all tw-duration-500"
 			>
 				<b-icon icon="box-arrow-left" class="tw-text-base"></b-icon>
@@ -28,6 +29,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 export default {
 	name: 'Sidebar',
 	props: {
@@ -57,6 +59,14 @@ export default {
 				path: '/admin/users'
 			}
 		]
-	})
+	}),
+	methods: {
+		...mapActions('Auth', ['signOutUser']),
+		async onSignOut() {
+			if (confirm("Are you sure to signout?")) {
+				await this.signOutUser()
+			}
+		},
+	}
 }
 </script>

@@ -76,10 +76,7 @@ export default {
 				...record,
 				...this.record
 			})
-			if (res.err) {
-				console.log(res.err)
-				this.error = res.err.message
-			}
+			if (res.err) (this.error = res.err.message)
 			else this.$bvModal.hide('modal-record-crime')
 			this.loading = false
 		}

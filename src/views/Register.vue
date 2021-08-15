@@ -1,8 +1,8 @@
 <template>
 	<div class="tw-py-5 md:tw-py-10 lg:tw-py-12 xl:tw-py-16">
 		<b-card class="md:tw-p-5">
-			<div>Welcome to CrimeLogr</div>
-			<h3>Create new Account</h3>
+			<div class="tw-text-base">Welcome to CrimeLogr</div>
+			<h3 class="tw-text-3xl">Create new Account</h3>
 			<hr />
 
 			<form @submit.prevent="onRegister">
@@ -82,7 +82,7 @@
 				<button class="btn btn-success tw-mt-8">Register</button>
 				<p class="tw-mt-2">
 					Already have an account?
-					<router-link class="tw-text-green-500" :to="{ name: 'Login' }">Login here</router-link>
+					<router-link class="tw-text-green-500" :to="{ name: 'Login' }">Login Here</router-link>
 				</p>
 			</form>
 		</b-card>

@@ -7,8 +7,8 @@ import 'firebase/firestore'
 const firebaseApp = firebase.initializeApp(_firebaseConfig)
 
 const Auth = firebase.auth()
-const Users = firebaseApp.firestore().collection('crime_map_users')
-const Buildings = firebaseApp.firestore().collection('crime_map_crimes')
+const Users = firebaseApp.firestore().collection('crimelogr_users')
+const Buildings = firebaseApp.firestore().collection('crimelogr_crimes')
 
 export { Auth, Users, Buildings, Buildings as Crimes };
 export default { Auth, Users, Buildings, Crimes: Buildings }

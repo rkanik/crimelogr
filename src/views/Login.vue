@@ -3,7 +3,7 @@
 		<b-card class="md:tw-p-5">
 			<div class="tw-text-base">Welcome to CrimeLogr</div>
 			<h3 class="tw-text-2xl">Login with your email and password</h3>
-			<hr class="my-4" />
+			<hr class="tw-my-4" />
 			<form action @submit.prevent="onSignIn">
 				<p v-if="error" class="alert alert-danger" role="alert">{{ error }}</p>
 

@@ -387,7 +387,7 @@ export default {
 				latLng: this.circle.location,
 				possibleDuplication: false,
 				confirmedAt: this.isAdmin ? Date.now() : null,
-				confirmedBy: this.isAdmin ? this.$user.id : null,
+				confirmedBy: this.isAdmin ? this.$user.userId : null,
 				createdAt: Date.now(),
 				updatedAt: Date.now(),
 			})

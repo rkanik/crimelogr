@@ -119,19 +119,25 @@ export default {
 				phoneNumber: '',
 			},
 			processing: false,
+			properties: [
+				'name', 'dob', 'email',
+				'gender', 'phoneNumber', 'country'
+			]
 		}
 	},
 	computed: {
 		...mapGetters('Auth', ['$user'])
 	},
 	watch: {
-		$user: {
+		'$user.id': {
 			deep: true,
 			immediate: true,
-			handler(user) {
-				if (user.id) {
-					this.user = { ...user }
-				}
+			handler(id) {
+				if (!id) return
+				this.user = only(
+					this.$user,
+					this.properties
+				)
 			}
 		}
 	},
@@ -140,15 +146,10 @@ export default {
 		async updateProfileDetails() {
 			this.processing = true
 			await this.updateProfile([
-				this.$user.id,
-				only(this.user, [
-					'name', 'dob', 'email',
-					'gender', 'phoneNumber', 'country'
-				])
+				this.$user.id, only(this.user, this.properties)
 			])
 			this.update = false
 			this.processing = false
-			alert("Profile details saved.")
 		},
 		async onSignOut() {
 			if (confirm("Are you sure to signout?")) {

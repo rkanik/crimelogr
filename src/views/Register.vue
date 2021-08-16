@@ -14,7 +14,7 @@
 						type="text"
 						v-model="user.name"
 						class="form-control"
-						placeholder="Enter your fullname"
+						placeholder="Enter your full name"
 					/>
 				</div>
 				<div class="form-group tw-mt-4">

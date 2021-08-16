@@ -21,10 +21,10 @@
 
 <script>
 import Auth from "@/firebase/auth"
-import { mapActions, mapGetters } from 'vuex'
-import RotateSquare3 from 'vue-loading-spinner/src/components/RotateSquare3.vue'
 import { Users } from './firebase/init'
 import { getCountry } from './helpers'
+import { mapActions, mapGetters } from 'vuex'
+import RotateSquare3 from 'vue-loading-spinner/src/components/RotateSquare3.vue'
 export default {
 	name: 'App',
 	components: {
@@ -37,10 +37,27 @@ export default {
 	async created() {
 		this.loading = true
 		Auth.onStateChanged(user => {
-			this.$store.commit('Auth/SET', {
-				user: user ? user : { id: null },
-				isAuth: user ? true : false,
-			})
+			if (user && !user.ref.emailVerified) {
+				this.loading = false
+				this.$store.commit('Auth/SET', { isAuth: false, tempUser: user })
+				return this.$route.name !== 'VerifyEmail' && this.$router.replace({ name: 'VerifyEmail' })
+			}
+
+			if (user && user.ref.emailVerified) {
+				this.$store.commit('Auth/SET', {
+					user: user ? user : { id: null },
+					isAuth: user ? true : false,
+				})
+				Users.doc(user.id).onSnapshot(userSnapshot => {
+					this.$store.commit('Auth/SET', {
+						user: {
+							ref: user.ref,
+							id: userSnapshot.id,
+							...userSnapshot.data()
+						},
+					})
+				})
+			}
 
 			// Redirect to login if not logged in
 			const requiresAuth = this.$route.matched.some(res => res.meta.requiresAuth)
@@ -51,17 +68,6 @@ export default {
 			if (redirectIsAuth && user && this.$route.name !== 'Home') this.$router.replace({ name: 'Home' })
 
 			this.loading = false
-
-			if (user) {
-				Users.doc(user.id).onSnapshot(userSnapshot => {
-					this.$store.commit('Auth/SET', {
-						user: {
-							id: userSnapshot.id,
-							...userSnapshot.data()
-						},
-					})
-				})
-			}
 		})
 
 		let country = await getCountry()

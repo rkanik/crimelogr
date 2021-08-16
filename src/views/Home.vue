@@ -72,13 +72,13 @@
 			@place="onSelectPlace"
 		/>
 
-		<map-types v-model="mapType" class="tw-absolute tw-right-3 tw-top-18" />
+		<!-- <map-types v-model="mapType" class="tw-absolute tw-right-3 tw-top-18" /> -->
 
 		<dropdown
 			:icon-button="true"
 			v-model="filter.range"
 			:items="filterRanges"
-			class="tw-shadow tw-absolute tw-right-3 tw-top-32"
+			class="tw-shadow tw-absolute tw-right-3 tw-top-18"
 		>
 			<template #toggler="{on,text}">
 				<button
@@ -209,7 +209,7 @@ import { mapActions, mapGetters } from 'vuex'
 
 import SearchBar from '@/components/SearchBar'
 import CreateRecordDialog from '@/components/CreateRecordDialog'
-import MapTypes from '../components/MapTypes.vue'
+// import MapTypes from '../components/MapTypes.vue'
 import Menu from '../components/utils/Menu.vue'
 import { only } from '../helpers'
 import { countries, filterRanges, _time } from '../consts'
@@ -226,7 +226,7 @@ export default {
 		Menu,
 		SearchBar,
 		CreateRecordDialog,
-		MapTypes,
+		// MapTypes,
 		IconButton,
 		Dropdown
 	},

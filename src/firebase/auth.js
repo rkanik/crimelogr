@@ -27,10 +27,10 @@ const onStateChanged = cb => {
 	Auth.onAuthStateChanged(async user => {
 		if (user) {
 			let { res } = await DB.getUser(user.uid)
-			if (res) return cb(res)
-			// if (res) return cb({
-			// 	...res, ref: user
-			// })
+			// if (res) return cb(res)
+			if (res) return cb({
+				...res, ref: user
+			})
 			else return cb()
 		}
 		else return cb()

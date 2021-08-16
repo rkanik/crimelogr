@@ -5,6 +5,7 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
+import VerifyEmail from '../views/VerifyEmail.vue'
 import ForgotPassword from '../views/ForgotPassword.vue'
 import Listing from '../views/Listing.vue'
 import About from '../views/About.vue'
@@ -24,8 +25,8 @@ const router = new VueRouter({
       path: '/auth',
       component: AuthLayout,
       meta: {
-        redirectIsAuth: true,
         requiresAuth: false,
+        redirectIsAuth: true,
       },
       children: [
         {
@@ -42,6 +43,11 @@ const router = new VueRouter({
           path: '/forgot-password',
           name: 'ForgotPassword',
           component: ForgotPassword
+        },
+        {
+          path: '/verify',
+          name: 'VerifyEmail',
+          component: VerifyEmail
         },
       ],
     },

@@ -1,6 +1,6 @@
 <template>
 	<b-container class="tw-py-4 tw-flex-1 scrollbar-y">
-		<h5 class="tw-mb-4 tw-text-xl tw-font-bold">Crime Summary(for selected radius)</h5>
+		<h5 class="tw-mb-4 tw-text-xl tw-font-bold">Crime Summary: for radius of {{$radius / 1000}}km</h5>
 		<div class="tw-grid tw-gap-1 tw-grid-cols-5 tw-mb-4">
 			<button
 				:key="rangeIndex"
@@ -117,7 +117,7 @@ export default {
 
 				xaxis: {
 					labels: {
-						formatter: v => v,
+						formatter: v => Math.round(v),
 					},
 					categories: crimes
 						.find(crime => crime.id === id).crimes

@@ -27,7 +27,7 @@
 					:options="occuredOptions"
 					class="tw-flex tw-space-x-3 tw-items-center"
 				/>
-				<Menu v-model="occuredMenu" :closeOnContentClick="false" content-class="tw-left-0">
+				<Menu v-model="occuredMenu" :closeOnContentClick="false" content-class="tw--left-20">
 					<template #toggler="{on}">
 						<div v-on="on" class="tw-flex tw-space-x-1 tw-items-center">
 							<div

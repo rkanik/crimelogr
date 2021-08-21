@@ -3,6 +3,10 @@ export const miniId = (len = 3) =>
 		.toString(36)
 		.slice(len <= 10 ? -len : -10);
 
+export const randomWithin = (max = 1000, min = 0) => {
+	return Math.floor(Math.random() * (max - min) + min);
+}
+
 export const snapShotToArray = snapShot => {
 	if (snapShot.empty) return []
 	let data = []

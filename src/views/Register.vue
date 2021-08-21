@@ -46,10 +46,6 @@
 					</select>
 				</div>
 				<div class="form-group tw-mt-4">
-					<label>Date of Birth</label>
-					<b-form-datepicker required locale="en" v-model="user.dob"></b-form-datepicker>
-				</div>
-				<div class="form-group tw-mt-4">
 					<label>Country of Interest</label>
 					<select required name="Country" v-model="user.country" class="form-control">
 						<option value>Select country of interest</option>
@@ -96,19 +92,18 @@
 <script>
 import { mapActions } from 'vuex'
 import { countries } from '../consts'
-import { miniId } from '../helpers'
+import { randomWithin } from '../helpers'
 export default {
 	name: 'Register',
 	data() {
 		return {
 			countries,
 			user: {
-				userId: 'CL' + miniId(10).toUpperCase(),
+				userId: 'CLOG' + randomWithin(99999),
 				name: '',
 				gender: '',
 				phoneNumber: '',
 				email: '',
-				dob: '',
 				role: 'user',
 				password: '',
 				country: ''

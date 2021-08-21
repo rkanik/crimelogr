@@ -1,0 +1,146 @@
+[
+	{
+		"question": " What is CrimeLogr?",
+		"answer": "CrimeLogr is an app designed to fill the gap/need for accessible statistics of crime in developing countries. Unlike what obtains in developed countries, where data on each reported/confirmed crime is available from a geolocation-based application, in many (African/Asian) countries, such data is simply not available. This app therefore intends to fill this gap by empowering citizens with reliable information about crimes that have occurred in their neighbourhoods and cities. This is certainly going to be helpful when a user is interested in renting/purchasing property; relocating to a new city for work/schooling; or just simply concerned about the patterns, types and frequencies of crime in a particular area of interest. While this app is not designed for law enforcement officers, it can certainly contribute towards providing a holistic view of crimes in a neighbourhood, town/city, state/region and country as a whole."
+	},
+	{
+		"question": "How does the circle/radius work?",
+		"answer": "The circles (radius) are designed to simplify the visualisation of crime in an area of interest. For instance, if you were interested in crimes in your street, then a radius of 200m may be helpful to filter only those crimes that are within a circle whose diameter is 400m – which makes sense for appreciating the crime levels in a street. On a neighbourhood scale, a radius of 1km or 2km may make sense, while for a town/city scale, a radius of 10km may be helpful."
+	},
+	{
+		"question": "How do I search for crimes in a different location (Place or City) from where I am?",
+		"answer": "Use the search box at the top of the app to type the name of the place, neighbourhood, town or city of interest and Google Maps engine will take care of the rest. If the ‘Place’ you are interested in (e.g. a shopping mall) does not show up, then it is probably because it is not officially registered under Google Maps. In which case, use a nearby (popular) Place to navigate to your location of interest."
+	},
+	{
+		"question": "What is the meaning behind the different colours of crime markers?",
+		"answer": "There are 3 categories of crimes: Violent Crimes are shown in RED markers; Rough Crimes are shown in ORANGE markers and Passive Crimes are shown in YELLOW markers. Any crime that falls outside of a specified radius (circle) is shown with a BLACK marker until the circle is dragged towards that particular marker – or the radius is increased to include that marker."
+	},
+	{
+		"question": "How can I zoom into or out in the map?",
+		"answer": "Use the plus (+) and minus (-) buttons to zoom into and out of the map."
+	},
+	{
+		"question": "How do I record a crime?",
+		"answer": "To record a crime, press the red coloured “Record” button. It will bring up a pop-up window from where you can select the type of crime and provide other necessary details. This recorded crime is not going to be immediately visible to other users until it has been scrutinised and approved by an Admin."
+	},
+	{
+		"question": "Is my personal identification information safe?",
+		"answer": "We only collect just enough information to be able to ascertain the true identity of a user. We do not share your personal details with anyone and if you record a crime, an anonymous alphanumeric ID is used to associate you with that record. You cannot change this ID because it is auto-generated and guarantees your privacy."
+	},
+	{
+		"question": "I want to record a crime that occurred some time ago but I do not know the exact date. How do I go about it?",
+		"answer": "When recording a crime, one of the required fields is time of occurrence which is captured under “When did crime happen”. There are two options available to choose: (1) ‘Just now’ for a crime that is literally just occuring or has just occurred moments ago; or (2) ‘Approx. Period’ for a crime that occurred at an earlier date. This second option allows you to choose a specific date from a calendar, or you can choose a range of days for the crime occurrence, e.g. within a 3-day or 7-day window (note: select start and end dates)."
+	},
+	{
+		"question": "Why are there no images (photos) for recorded crimes?",
+		"answer": "To avoid infringing on third-party copyright, we are unable to include photo evidence of a crime, even where such photo is available. When you follow the available link for each crime, you may find the photo evidence related to that crime."
+	},
+	{
+		"question": "Why is my recorded crime not immediately visible to others?",
+		"answer": "Our Admins will conduct an appraisal for each submitted crime in order to ascertain its plausibility based on a number of factors/criteria. Only when they are satisfied with the submitted crime will it be made public."
+	},
+	{
+		"question": "How are crime points determined?",
+		"answer": "The points allocated to each crime depends on their category. Violent Crimes have between 7 to 9 points; Rough Crimes have between 4 to 6 points and Passive Crimes have between 1 and 3 points."
+	},
+	{
+		"question": "What is “Total crime points in Radius”?",
+		"answer": "Based on the number of points allocated to each crime, the summation (total) of all the crimes is provided as a ‘Total’ at the bottom of the App. As an example, a particular radius may have total of crime points of 27 because it has either few Violent Crimes (7 to 9 points) or because it has a lot of Passive Crimes (1 to 3 points)."
+	},
+	{
+		"question": "What does Crime Summary tell us?",
+		"answer": "The crime summary page provides a graphic/bar chart overview of each crime under the three categories, for a selected radius. Sometimes this a better way of understanding the level of crimes in an area of interest. As a radius is increased or decreased, the bar char will automatically update to reflect the number (and types) of crimes in that area (circle)."
+	},
+	{
+		"question": "What is a PSI (Personal Safety Index):",
+		"answer": "PSI is calculated for a 2km radius only and is a relative measure of how safe a person is within that radius with respect to three categories of crime (Violent Crimes, Rough Crimes & Passive Crimes). This indicator can be viewed in many ways depending on the need or circumstances of the user. For example, when renting a new place to live/work or when choosing a new school for a child, what kinds of crimes would you be deal breakers? For instance, when choosing a new school for a child, one might tolerate higher PSI-P (passive crimes like cybercrime, forgery, illegal waste disposal) than say a very high PSI-V or PSI-R, which indicate violent and rough crimes, respectively."
+	},
+	{
+		"question": "What is the meaning of the various PSIs (PSI-V; PSI-R; PSI-P) and how do I interpret their scores?",
+		"answer": "PSI-V stands for Violent Crimes; PSI-R is for Rough Crimes and PSI-P is for Passive crimes. A PSI value of between 0 and 0.33 is regarded as low risk; PSI of between 0.34 and 0.66 is regarded as medium risk; PSI of between 0.67 and 0.99 is regarded as high risk; while PSI above 1.0 is regarded as extreme risk."
+	},
+	{
+		"question": "How do I use the PSI functionality in the app?",
+		"answer": "There are three steps involved: (1) Make sure you are on a 2km radius otherwise the PSI button will not be activated (available); (2) Ensure that your circle is centred around the area of interest (use the current location icon if you are checking PSI of where you are presently standing); (3) Press the PSI button to get the PSI values for Violent, Rough and Passive Crimes. If a particular type of PSI is showing 0.0 then it means there is no crime of that type recorded within the 2km radius that was selected.."
+	},
+	{
+		"question": "What is SOS and how do I use it?",
+		"answer": "The SOS is a functionality designed to enable a user to report their involvement (or witnessing) of a crime. When the SOS button is pressed, you will have to select a particular type of crime before a message is available to be shared with others (via WhatsApp, Twitter; SMS, Email, etc) alerting them to your situation."
+	},
+	{
+		"question": "What are the categories and types of Crimes?",
+		"answer": "There are three categories of crimes, each of which has multiple types of crimes associated with it, as explained below:",
+		"items": [
+			{
+				"title": "Violent Crimes (red markers):",
+				"items": [
+					"Armed Robbery",
+					"Mob Attack or Lynching",
+					"Kidnapping",
+					"Murder / Killing",
+					"Rape",
+					"Police Brutality",
+					"Personal Assault",
+					"Cult or Gang Violence",
+					"Terrorism",
+					"Child Sexual Molestation"
+				]
+			},
+			{
+				"title": "Rough Crimes (orange markers):",
+				"items": [
+					"Theft / Stealing",
+					"Vehicle Theft",
+					"Burglary",
+					"Religious Tension / Conflict",
+					"People Fighting",
+					"Mugging",
+					"Riots",
+					"Destruction of Property",
+					"Violent Protest",
+					"Sexual Harassment",
+					"Domestic Abuse",
+					"Drug Use / Possession"
+				]
+			},
+			{
+				"title": "Passive Crimes (yellow markers):",
+				"items": [
+					"Cybercrime",
+					"Forgery & Counterfeiting",
+					"Embezzlement",
+					"Bribery & Extortion",
+					"Smuggling",
+					"Child Labour",
+					"Human Trafficking",
+					"Illegal Waste Disposal",
+					"Hate Speech / Crime",
+					"Illegal Water / Electricity tapping",
+					"Bullying / Harassment",
+					"Impersonation"
+				]
+			}
+		]
+	},
+	{
+		"question": "How reliable is CrimeLogr as a source of holistic crime information?",
+		"answer": "The crime data provided in geolocated map view (and subsequently as charts) has been sourced from either original/formal source of news, i.e. verified media outlets or from first-person account (as long as a reasonable level of plausibility can be established from such first-person accounts), which could emanate from ‘informal’ social media reports. Some of the crime data are reported by individuals or third parties and CrimeLogr makes the best effort to verify the plausibility of such data before it is made available to the public. Such crimes reported by third parties are  visible to the public until their source and plausibility has been checked by management of CrimeLogr."
+	},
+	{
+		"question": "Why is there no crime information about a particular place?",
+		"answer": "This means no reliable information about crimes has been found for that location or the database has not yet being populated with available crime data. We welcome your contribution by submitting a crime (with relevant supporting evidence as required by the app) and preferably these crime events are no older than 3 years (36 months)."
+	},
+	{
+		"question": "Why is my country not covered?",
+		"answer": "For now, the app developers are concerned with specific English speaking countries in Africa, namely: Ghana, Nigeria, Kenya and South Africa. In future, the app should cover as many countries in Africa (and elsewhere) as long as a business case or need (as well as reliable user base) is evident."
+	},
+	{
+		"question": "How can I change my registration details?",
+		"answer": "You can change your registration details at the User Profile page."
+	},
+	{
+		"question": "What if my question has not been answered in this FAQ?",
+		"answer": "Please contact us at this email address:",
+		"email": "info@crimelogr.com"
+	}
+]

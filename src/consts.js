@@ -20,7 +20,7 @@ export const filterOptions = [
 	{ value: 'all', text: 'All Crimes' },
 	{ value: 1, text: 'Violent Crimes' },
 	{ value: 2, text: 'Rough Crimes' },
-	{ value: 3, text: 'Non-Violent Crimes' },
+	{ value: 3, text: 'Passive Crimes' },
 	{ value: 'not-approved', text: 'Not approved' },
 ]
 export const countries = [

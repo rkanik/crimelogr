@@ -107,7 +107,7 @@
 		"id": 3,
 		"color": "#313131",
 		"bgColor": "#ffeb3b",
-		"category": "Non-Violent Crimes",
+		"category": "Passive Crimes",
 		"crimes": [
 			{
 				"type": "Cybercrime",

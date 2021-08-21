@@ -120,8 +120,14 @@
 		<div class="tw-absolute tw-bottom-20 tw-w-11 tw-left-3">
 			<Menu v-model="psiMenu" contentClass="tw-left-full tw-bottom-full">
 				<template #toggler="{on}">
+					<b-tooltip
+						triggers="hover"
+						placement="right"
+						target="tooltip-psi"
+					>Calculate Personal Safety Index</b-tooltip>
 					<button
 						v-on="on"
+						id="tooltip-psi"
 						v-if="$isSubscribed"
 						:disabled="$radius !== 2000"
 						class="tw-h-12 tw-w-12 tw-rounded-md tw-text-white tw-shadow-md"
@@ -150,11 +156,22 @@
 			</Menu>
 			<icon-button
 				icon="arrows-move"
+				id="tooltip-move-circle"
 				class="tw-mt-2 tw-text-white"
 				@click="toggleCircleDraggable"
 				:class="[circle.draggable ? 'tw-bg-green-600' : 'tw-bg-gray-500']"
 			></icon-button>
-			<icon-button class="tw-mt-2 tw-bg-green-600 tw-text-white" @click="onClickCurrentLocation">
+			<b-tooltip
+				triggers="hover"
+				placement="right"
+				target="tooltip-move-circle"
+			>Activate this button to move circle</b-tooltip>
+
+			<icon-button
+				id="tooltip-current-location"
+				class="tw-mt-2 tw-bg-green-600 tw-text-white"
+				@click="onClickCurrentLocation"
+			>
 				<svg viewBox="0 0 91 91" class="tw-h-11 tw-w-11">
 					<g>
 						<path
@@ -168,6 +185,11 @@
 					</g>
 				</svg>
 			</icon-button>
+			<b-tooltip
+				triggers="hover"
+				placement="right"
+				target="tooltip-current-location"
+			>Click this to centre circle on your location</b-tooltip>
 		</div>
 
 		<div class="tw-absolute tw-bottom-20 tw-w-11 tw-right-3">

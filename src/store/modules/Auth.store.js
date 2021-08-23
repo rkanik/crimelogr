@@ -19,9 +19,13 @@ const getters = {
 	$isAuth: ({ isAuth }) => isAuth,
 	$tempUser: state => state.tempUser,
 	$authRole: state => state.user.role,
-	$isUser: state => state.user.role === 'user',
-	$isAdmin: state => state.user.role === 'admin',
-	$isSuperAdmin: state => state.user.role === 'super-admin',
+
+	// Roles
+	$isAdmin: state => ['admin'].includes(state.user.role),
+	$isViewer: state => ['viewer'].includes(state.user.role),
+	$isUser: state => ['user', 'viewer'].includes(state.user.role),
+	$isSuperAdmin: state => ['super-admin'].includes(state.user.role),
+
 	$isSubscribed: state => (
 		['admin', 'super-admin'].includes(state.user.role) ||
 		state.user.isSubscribed === true

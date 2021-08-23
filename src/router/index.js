@@ -103,7 +103,7 @@ const router = new VueRouter({
           name: 'Map',
           meta: {
             requiresAuth: true,
-            requireRoles: ['admin', 'super-admin']
+            requireRoles: ['admin', 'super-admin', 'viewer']
           },
           component: () => import(`@/views/admin/Map.vue`)
         },

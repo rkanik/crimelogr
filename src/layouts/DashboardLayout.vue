@@ -14,7 +14,11 @@
 		</b-navbar>
 
 		<div class="tw-flex tw-flex-1 tw-overflow-hidden">
-			<sidebar v-if="bp.mdAndUp" class="tw-flex-none tw-w-52 xl:tw-w-60 tw-border-r tw-p-3"></sidebar>
+			<sidebar
+				v-if="bp.mdAndUp"
+				:user="$user"
+				class="tw-flex-none tw-w-52 xl:tw-w-60 tw-border-r tw-p-3"
+			></sidebar>
 			<main class="p-3 tw-flex-1 scrollbar-y">
 				<route-wrapper-y>
 					<router-view />
@@ -96,15 +100,15 @@ export default {
 				crimesQuery
 					.limit(100).get()
 					.then(snapShot => {
-						let crimes = !snapShot.empty
-							? snapShotToArray(snapShot) : []
+						let crimes = !snapShot.empty ? snapShotToArray(snapShot) : []
+						if (this.$isViewer) crimes = crimes.filter(crime => crime.confirmedBy)
 						this.setRecords(crimes)
 					})
 			}
 		}
 	},
 	computed: {
-		...mapGetters('Auth', ['$user']),
+		...mapGetters('Auth', ['$user', '$isViewer']),
 		...mapGetters('Records', ['$records', '$filter']),
 	},
 	methods: {
@@ -113,7 +117,7 @@ export default {
 		]),
 		doesSatisfyFilter(crime, filter) {
 			if (filter.country !== 'all' && crime.country !== filter.country) return false
-			if (filter.type === 'not-approved' && !crime.confirmedBy) return false
+			if (!this.$isViewer && filter.type === 'not-approved' && !crime.confirmedBy) return false
 			else if (filter.type !== 'all' && filter.type !== crime.categoryId) return false
 			if (crime.createdAt < Date.now() - (_time.month * filter.range)) return false
 			return true

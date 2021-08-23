@@ -72,7 +72,13 @@
 									v-if="$isSuperAdmin"
 									:disabled="$isAdmin && row.item.role === 'admin'"
 									@click="toggleRole(row.item)"
-								>{{row.item.role==='admin' ? 'Demote to user' : 'Promote to Admin'}}</b-list-group-item>
+								>{{row.item.role==='admin' ? 'Demote to User' : 'Promote to Admin'}}</b-list-group-item>
+
+								<b-list-group-item
+									v-if="$isSuperAdmin && ['user','viewer'].includes(row.item.role)"
+									@click="toggleRole(row.item, row.item.role === 'user' ? 'viewer' : 'user')"
+								>{{row.item.role === 'user' ? 'Make Map Viewer' : 'Demote to User'}}</b-list-group-item>
+
 								<b-list-group-item @click="onDeleteUser(row.item)">Delete</b-list-group-item>
 							</b-list-group>
 						</div>
@@ -192,11 +198,13 @@ export default {
 				isSubscribed: !user.isSubscribed
 			})
 		},
-		toggleRole(user) {
+		toggleRole(user, role) {
 			user.ref.update({
-				role: user.role === 'admin'
-					? 'user'
-					: 'admin'
+				role: role || (
+					user.role === 'admin'
+						? 'user'
+						: 'admin'
+				)
 			})
 		},
 		onDeleteUser(user) {

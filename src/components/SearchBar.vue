@@ -28,7 +28,10 @@
 					class="tw-text-base tw-text-gray-700 tw-w-full tw-bg-transparent tw-h-12 focus:tw-outline-none"
 				/>
 			</div>
-			<router-link v-if="!expanded && ['admin', 'super-admin'].includes($user.role)" to="/admin">
+			<router-link
+				v-if="!expanded && ['admin', 'super-admin', 'viewer'].includes($user.role)"
+				to="/admin"
+			>
 				<svg
 					height="16"
 					width="16"

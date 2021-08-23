@@ -27,7 +27,7 @@
 				:clickable="true"
 				:key="record.id"
 				:position="record.latLng"
-				v-for="record in $records"
+				v-for="record in filterRecords"
 				@click="onClickRecordMarker(record)"
 				:icon="record.confirmedBy
 					? require(`@/assets/svg/${record.categoryId}-marker.svg`)
@@ -99,11 +99,15 @@ export default {
 		}
 	},
 	computed: {
-		...mapGetters('Auth', ['$user', '$isUser']),
+		...mapGetters('Auth', ['$user', '$isUser', '$isViewer']),
 		...mapGetters('Records', ['$records', '$filter']),
 		filter: {
 			get() { return this.$filter },
 			set(v) { this.setFilter(v) }
+		},
+		filterRecords() {
+			if (!this.$isViewer) return this.$records
+			return this.$records//.filter(record => record.confirmedBy)
 		}
 	},
 	methods: {
@@ -152,28 +156,30 @@ export default {
 			wrapper.classList.add('mt-2', 'tw-flex', 'tw-space-x-2')
 
 			if (!rec.confirmedBy) {
-				// Approve button
-				const approveButton = document.createElement('button')
-				approveButton.innerText = 'Approve'
-				approveButton.style.cssText = `padding: 2px 8px`
-				approveButton.classList.add('btn', 'btn-primary', 'btn-sm', 'm-1')
-				approveButton.addEventListener('click', async () => {
-					const update = {
-						updatedAt: Date.now(),
-						confirmedAt: Date.now(),
-						confirmedBy: this.$user.userId,
-					}
-					await rec.ref.update(update)
-					this.onClickRecordMarker({ ...rec, ...update })
-				})
-				wrapper.appendChild(approveButton)
+				if (!this.$isViewer) {
+					// Approve button
+					const approveButton = document.createElement('button')
+					approveButton.innerText = 'Approve'
+					approveButton.style.cssText = `padding: 2px 8px`
+					approveButton.classList.add('btn', 'btn-primary', 'btn-sm', 'm-1')
+					approveButton.addEventListener('click', async () => {
+						const update = {
+							updatedAt: Date.now(),
+							confirmedAt: Date.now(),
+							confirmedBy: this.$user.userId,
+						}
+						await rec.ref.update(update)
+						this.onClickRecordMarker({ ...rec, ...update })
+					})
+					wrapper.appendChild(approveButton)
+				}
 
 				this.$isUser && (notConfirmed = `
 					<p class='tw-text-sm tw-text-red-500 tw-ml-3 tw-mb-0 tw-leading-9'>Not confirmed yet</p>
 				`)
 			}
 
-			wrapper.appendChild(btn)
+			!this.$isViewer && wrapper.appendChild(btn)
 			notConfirmed && (wrapper.innerHTML += notConfirmed)
 
 			div.innerHTML = `

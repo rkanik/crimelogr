@@ -138,6 +138,7 @@
 					</button>
 					<button
 						v-else
+						id="tooltip-psi"
 						@click="toggleSubscribeModal(true)"
 						class="tw-h-12 tw-w-12 tw-grid tw-place-items-center tw-rounded-md tw-bg-green-600 tw-text-white tw-shadow-md"
 					>PSI</button>

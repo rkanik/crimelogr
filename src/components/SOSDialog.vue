@@ -1,5 +1,9 @@
 <template>
-	<b-modal hide-footer id="modal-sos" title="Select crime type">
+	<b-modal
+		hide-footer
+		id="modal-sos"
+		title="Select crime type based on your current location and send it as SOS message"
+	>
 		<div v-for="(crm, i) in crimes" :key="crm.id" :class="{'tw-mt-3':i}">
 			<crime-checkbox :crime="crm" :value="type" @input="([_,crime])=>{type=crime.type}"></crime-checkbox>
 		</div>

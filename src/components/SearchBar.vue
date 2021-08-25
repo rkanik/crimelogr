@@ -22,7 +22,7 @@
 				<input
 					type="text"
 					@focus="onExpanded"
-					:placeholder="`Search here (${userCountry})`"
+					:placeholder="`Search for a crime location here (in ${userCountry})`"
 					v-model="search.keyword"
 					@input="onInputKeyword"
 					class="tw-text-base tw-text-gray-700 tw-w-full tw-bg-transparent tw-h-12 focus:tw-outline-none"

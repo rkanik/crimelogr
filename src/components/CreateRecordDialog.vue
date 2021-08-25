@@ -90,6 +90,9 @@ export default {
 			max-width: 220px;
 			line-height: 1.25;
 		}
+	}
+	#modal-sos,
+	#modal-record-crime {
 		button.close[aria-label="Close"] {
 			font-size: 32px;
 		}

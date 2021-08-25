@@ -1,8 +1,9 @@
 <template>
 	<div class="tw-py-5 md:tw-py-10 lg:tw-py-12 xl:tw-py-16">
 		<b-card class="md:tw-p-5">
-			<div class="tw-text-base">Welcome to CrimeLogr</div>
-			<h3 class="tw-text-2xl">Login with your email and password</h3>
+			<img src="@/assets/img/logo-1-transparent.png" alt="Logo" class="tw-h-24" />
+			<div class="tw-text-base tw-mt-4 tw-text-red-500">Welcome to CrimeLogr</div>
+			<h3 class="tw-text-2xl tw-mt-2">Login with your email and password</h3>
 			<hr class="tw-my-4" />
 			<form action @submit.prevent="onSignIn">
 				<p v-if="error" class="alert alert-danger" role="alert">{{ error }}</p>
@@ -20,7 +21,7 @@
 				<button class="btn btn-success tw-mt-8" :disabled="processing">Sign In</button>
 				<p class="mt-2">
 					<span class="tw-mr-1">Don't have an account?</span>
-					<router-link :to="{ name: 'Register' }" class="tw-text-green-500">Register Now</router-link>
+					<router-link :to="{ name: 'Register' }" class="tw-text-red-500">Register Now</router-link>
 				</p>
 			</form>
 		</b-card>

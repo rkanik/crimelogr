@@ -4,6 +4,7 @@ import VueRouter from 'vue-router'
 
 import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
+import LandingPage from '../views/LandingPage.vue'
 import Register from '../views/Register.vue'
 import VerifyEmail from '../views/VerifyEmail.vue'
 import ForgotPassword from '../views/ForgotPassword.vue'
@@ -22,13 +23,18 @@ const router = new VueRouter({
   mode: 'history',
   routes: [
     {
-      path: '/auth',
+      path: '/',
       component: AuthLayout,
       meta: {
         requiresAuth: false,
         redirectIsAuth: true,
       },
       children: [
+        {
+          path: '/',
+          name: 'LandingPage',
+          component: LandingPage
+        },
         {
           path: '/login',
           name: 'Login',
@@ -89,15 +95,6 @@ const router = new VueRouter({
       component: DashboardLayout,
       redirect: '/admin/map',
       children: [
-        // {
-        //   path: '',
-        //   name: 'Dashboard',
-        //   meta: {
-        //     requiresAuth: true,
-        //     requireRoles: ['admin', 'super-admin']
-        //   },
-        //   component: () => import(`@/views/admin/Dashboard.vue`)
-        // },
         {
           path: 'map',
           name: 'Map',

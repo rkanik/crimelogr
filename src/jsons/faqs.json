@@ -12,6 +12,10 @@
 		"answer": "Use the search box at the top of the app to type the name of the place, neighbourhood, town or city of interest and Google Maps engine will take care of the rest. If the ‘Place’ you are interested in (e.g. a shopping mall) does not show up, then it is probably because it is not officially registered under Google Maps. In which case, use a nearby (popular) Place to navigate to your location of interest."
 	},
 	{
+		"question": "How do I move the circle to a different location to view existing crimes or record a crime?",
+		"answer": "To move the circle to a different location from where it is, you need to activate the move icon and then drag the circle by the edge towards the new location. All the recorded crimes in that new location will be shown within the circle (depending on radius of circle). To record a crime in that new / desired location - make sure the (blue dot) centre of the circle is where you want it to be, before you press the “Record Crime” button."
+	},
+	{
 		"question": "What is the meaning behind the different colours of crime markers?",
 		"answer": "There are 3 categories of crimes: Violent Crimes are shown in RED markers; Rough Crimes are shown in ORANGE markers and Passive Crimes are shown in YELLOW markers. Any crime that falls outside of a specified radius (circle) is shown with a BLACK marker until the circle is dragged towards that particular marker – or the radius is increased to include that marker."
 	},

@@ -2,7 +2,7 @@
 	<b-container class="tw-py-4 tw-flex-1 scrollbar-y">
 		<b-form @submit.prevent="updateProfileDetails">
 			<b-card>
-				<b-card-header class="tw-bg-blue-500 tw-text-white">
+				<b-card-header class="tw-bg-green-600 tw-text-white tw--mx-4 tw--mt-4">
 					<b-card-title class="tw-mb-0 tw-font-medium tw-flex tw-items-center tw-justify-between">
 						<span>User Profile</span>
 						<b-button v-if="!update" @click="update=true" variant="white" class="tw-text-white tw-px-2">
@@ -94,9 +94,14 @@
 			<button
 				v-if="update"
 				type="submit"
-				class="btn btn-primary tw-mt-4 tw-ml-4"
+				class="btn btn-success tw-mt-4 tw-ml-3"
 				:disabled="processing"
 			>Save details</button>
+			<button
+				type="button"
+				@click="onSendResetPassMail"
+				class="btn btn-primary tw-mt-4 tw-ml-3"
+			>Change Password</button>
 		</b-form>
 	</b-container>
 </template>
@@ -104,6 +109,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import { countries } from '../consts'
+import { Auth } from '../firebase/init'
 import { only } from '../helpers'
 export default {
 	name: 'Profile',
@@ -155,6 +161,15 @@ export default {
 			if (confirm("Are you sure to signout?")) {
 				await this.signOutUser()
 			}
+		},
+		async onSendResetPassMail() {
+			Auth.sendPasswordResetEmail(this.$user.email)
+				.then(() => {
+					alert(`A password reset email sent to ${this.$user.email}. Please check your email.`);
+				})
+				.catch((error) => {
+					alert(`Error while sending password reset email. ${error.message}`)
+				});
 		},
 		onCancelUpdate() {
 			this.update = false

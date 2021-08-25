@@ -21,12 +21,16 @@
 			class="tw-h-12 tw-flex-1 tw-grid tw-place-items-center"
 			:class="[$route.name === 'Summary'?'tw-bg-blue-500 tw-bg-opacity-20 tw-text-blue-500':'tw-bg-white tw-text-gray-600']"
 		>
-			<svg class="tw-h-6 tw-w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				width="16"
+				height="16"
+				fill="currentColor"
+				class="bi bi-bar-chart-line-fill"
+				viewBox="0 0 16 16"
+			>
 				<path
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					stroke-width="2"
-					d="M4 6h16M4 10h16M4 14h16M4 18h16"
+					d="M11 2a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v12h.5a.5.5 0 0 1 0 1H.5a.5.5 0 0 1 0-1H1v-3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3h1V7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7h1V2z"
 				/>
 			</svg>
 		</router-link>

@@ -1,8 +1,11 @@
 <template>
 	<b-container class="tw-py-5 tw-flex-1 scrollbar-y">
 		<div class="accordion" role="tablist">
-			<b-button class="tw-block tw-w-full" v-b-toggle.about-accordion>About this application</b-button>
-			<b-collapse id="about-accordion" visible accordion="info-accordion" role="tabpanel">
+			<b-button
+				class="tw-block tw-w-full tw-bg-green-600 tw-border-green-600"
+				v-b-toggle.about-accordion
+			>About this application</b-button>
+			<b-collapse id="about-accordion" accordion="info-accordion" role="tabpanel">
 				<b-card-body class="tw-px-1 tw-text-base tw-text-gray-900 tw-text-justify">
 					Security and personal safety are of paramount importance and in today’s digital age, information (about security and safety) is power. Whether you are concerned about crime in your residential area or your place of work, or perhaps around the area where your dependents live, work or school, CrimeLogr is able to provide you with a comprehensive view of the crimes that have taken place and the relative level of safety in that area.
 					<br />
@@ -13,10 +16,10 @@
 			</b-collapse>
 
 			<b-button
-				class="tw-block tw-mt-4 tw-w-full"
+				class="tw-block tw-mt-4 tw-w-full tw-bg-green-600 tw-border-green-600"
 				v-b-toggle.faq-accordion
 			>Frequently Asked Questions (FAQs)</b-button>
-			<b-collapse id="faq-accordion" visible accordion="info-accordion" role="tabpanel">
+			<b-collapse id="faq-accordion" accordion="info-accordion" role="tabpanel">
 				<b-card-body class="tw-px-1">
 					<div class="tw-space-y-4">
 						<div :key="faqIndex" v-for="(faq, faqIndex) in faqs">
@@ -45,10 +48,10 @@
 			</b-collapse>
 
 			<b-button
-				class="tw-block tw-mt-4 tw-w-full"
+				class="tw-block tw-mt-4 tw-w-full tw-bg-green-600 tw-border-green-600"
 				v-b-toggle.termnconditions-accordion
 			>Terms & Conditions</b-button>
-			<b-collapse id="termnconditions-accordion" visible accordion="info-accordion" role="tabpanel">
+			<b-collapse id="termnconditions-accordion" accordion="info-accordion" role="tabpanel">
 				<b-card-body class="tw-px-1 tw-text-base tw-text-gray-900 tw-text-justify">
 					By downloading or using the app, these terms will automatically apply to you – you should make sure therefore that you read them carefully before using the app.
 					<br />You’re not allowed to copy, or modify the app, any part of the app, or our trademarks in any way. You’re not allowed to attempt to extract the source code of the app, and you also shouldn’t try to translate the app into other languages or make derivative versions. The app itself, and all the trademarks, copyright, database rights and other intellectual property rights related to it, still belong to DeenBiz Ltd.
@@ -79,8 +82,11 @@
 				</b-card-body>
 			</b-collapse>
 
-			<b-button class="tw-block tw-mt-4 tw-w-full" v-b-toggle.privacy-accordion>Privacy Policy</b-button>
-			<b-collapse id="privacy-accordion" visible accordion="info-accordion" role="tabpanel">
+			<b-button
+				class="tw-block tw-mt-4 tw-w-full tw-bg-green-600 tw-border-green-600"
+				v-b-toggle.privacy-accordion
+			>Privacy Policy</b-button>
+			<b-collapse id="privacy-accordion" accordion="info-accordion" role="tabpanel">
 				<b-card-body class="tw-px-1 tw-text-base tw-text-gray-900 tw-text-justify">
 					DeenBiz Ltd built the CrimeLogr app as a Freemium app. This SERVICE is provided by DeenBiz Ltd at no cost and is intended for use as is.
 					This page is used to inform visitors regarding our policies with the collection, use, and disclosure of Personal Information if anyone decided to use our Service.
@@ -140,8 +146,11 @@
 				</b-card-body>
 			</b-collapse>
 
-			<b-button class="tw-block tw-mt-4 tw-w-full" v-b-toggle.contact-accordion>Contact / Message Us</b-button>
-			<b-collapse id="contact-accordion" visible accordion="info-accordion" role="tabpanel">
+			<b-button
+				class="tw-block tw-mt-4 tw-w-full tw-bg-green-600 tw-border-green-600"
+				v-b-toggle.contact-accordion
+			>Contact / Message Us</b-button>
+			<b-collapse id="contact-accordion" accordion="info-accordion" role="tabpanel">
 				<b-card-body class="tw-px-1 tw-text-base tw-text-gray-900 tw-text-justify">
 					If you have any questions or suggestions about our product/service, do not hesitate to contact us at
 					<a
@@ -150,8 +159,11 @@
 				</b-card-body>
 			</b-collapse>
 
-			<b-button class="tw-block tw-mt-4 tw-w-full" v-b-toggle.disclaimer-accordion>Disclaimer</b-button>
-			<b-collapse id="disclaimer-accordion" visible accordion="info-accordion" role="tabpanel">
+			<b-button
+				class="tw-block tw-mt-4 tw-w-full tw-bg-green-600 tw-border-green-600"
+				v-b-toggle.disclaimer-accordion
+			>Disclaimer</b-button>
+			<b-collapse id="disclaimer-accordion" accordion="info-accordion" role="tabpanel">
 				<b-card-body
 					class="tw-px-1 tw-text-base tw-text-gray-900 tw-text-justify"
 				>Disclaimer for CrimeLogr: The purpose of CrimeLogr is to assist the public in appraising the level of established crime within certain towns/cities of selected countries on an advisory level. The crime data provided in geolocated map view (and subsequently as charts) has been sourced from either original/formal source of news, i.e. verified media outlets or from first-person account (as long as a reasonable level of plausibility can be established from such first-person accounts), which could emanate from ‘informal’ social media reports. Some of the crime data are reported by individuals or third parties and CrimeLogr makes the best effort to verify the plausibility of such data before it is made available to the public. Such crimes reported by third parties are visible to the public until their source and plausibility has been checked by management of CrimeLogr. The suspects or alleged perpetrators of the crimes recorded in CrimeLogr are not identified in any way and the person(s) may not have been caught, tried or punished for their crimes - and it is not the intention or purpose of this app to lead to such outcomes. Subsequently, CrimeLogr does not make any claims concerning the accuracy, validity, completeness, or reliability of any crime data recorded in this application. Neither does CrimeLogr provide any warranty concerning the accuracy or fitness for any specific individual or organisational use of the App and its data, and no warranty can be inferred or implied by any user concerning the crime data collected and presented here. This applies to all attributes of the data including the calculation of Personal Safety Index (PSI) which is essentially an advisory indicator (algorithm) suggesting how safe a person could with respect to the various crimes that have occurred in a given radius at a particular time. The use of any crime data, meta-data or information from this app is at user’s own risk. The crime data recorded in CrimeLogr is subject to change, modifications and complete removal at the discretion of DeenBiz Ltd.</b-card-body>

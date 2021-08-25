@@ -27,8 +27,8 @@
 			</div>
 		</div>
 		<h5
-			class="tw-mb-4 tw-text-lg tw-font-bold tw-bg-green-600 tw-text-white tw-mt-3 tw-px-3 tw-py-1"
-		>Grand Total: {{crimesInsideRadius.length}}</h5>
+			class="tw-mb-4 tw-text-lg tw-font-bold tw-bg-green-600 tw-rounded tw-text-white tw-mt-3 tw-px-3 tw-py-1"
+		>Grand Total number of crimes in selected radius: {{crimesInsideRadius.length}}</h5>
 	</b-container>
 </template>
 

@@ -109,7 +109,7 @@ export default {
 				const { latitude, longitude } = position.coords
 				navigator.share({
 					title: `CrimeLogr`,
-					text: `This is an SOS message to let you know i am involved in (or witnessing) the following type of crime: ${type}. My current location is here (latitude, longitude): ${latitude},${longitude}.\n\n*** This SOS alert was generated from crimelogr app. You can learn more about it and download it from www.crimelogr.com ***`,
+					text: `This is an SOS message from an App called CrimeLogr. This is to let you know I am involved in (or witnessing) the following type of crime: ${type}. My current location is here: https://crimelogr.com/home?center=${latitude},${longitude} \n\n*** This SOS alert was generated from crimelogr app. You can learn more about it and download it from www.crimelogr.com ***`,
 					url: `${location.origin}/home?center=${latitude},${longitude}`,
 				})
 			})

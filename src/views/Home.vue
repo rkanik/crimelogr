@@ -83,8 +83,13 @@
 			<template #toggler="{on,text}">
 				<button
 					v-on="on"
-					class="tw-bg-green-600 tw-text-white tw-whitespace-nowrap tw-px-2 tw-rounded tw-h-11 tw-shadow"
-				>{{text.replace(' Months', 'mths')}}</button>
+					id="tooltip-ranges"
+					class="tw-h-20 tw-w-12 tw-py-1 tw-rounded-md tw-transition-all tw-bg-green-600 tw-text-white tw-justify-center tw-items-center tw-flex tw-flex-col"
+				>
+					<div class="tw-text-xl tw-font-medium">{{text.replace(' Months', '')}}</div>
+					<div class="tw-text-sm tw-border-t tw-border-white tw-pt-1 tw-mt-2">mths</div>
+				</button>
+				<b-tooltip triggers="hover" placement="left" target="tooltip-ranges">Select a period of interest</b-tooltip>
 			</template>
 		</dropdown>
 
@@ -92,6 +97,7 @@
 			<template #toggler="{on}">
 				<button
 					v-on="on"
+					id="tooltip-radius"
 					class="tw-h-20 tw-w-12 tw-py-1 tw-rounded-md tw-transition-all tw-bg-green-600 tw-text-white tw-justify-center tw-items-center tw-flex tw-flex-col"
 				>
 					<img src="@/assets/svg/radar.svg" class="tw-w-7 tw-h-7" />
@@ -99,6 +105,11 @@
 						class="tw-text-sm tw-border-t tw-border-white tw-pt-1 tw-mt-2"
 					>{{radiuses.find(r => r.value === radius).text}}</div>
 				</button>
+				<b-tooltip
+					triggers="hover"
+					placement="right"
+					target="tooltip-radius"
+				>Select a radius of interest</b-tooltip>
 			</template>
 			<div class="tw-left-0 tw-w-32 tw-mt-2 tw-bg-white tw-py-1 tw-shadow-md tw-rounded-md">
 				<div
@@ -124,12 +135,11 @@
 						triggers="hover"
 						placement="right"
 						target="tooltip-psi"
-					>Calculate Personal Safety Index</b-tooltip>
+					>Calculate Person Safety Index (at 2km radius only)</b-tooltip>
 					<button
 						v-on="on"
 						id="tooltip-psi"
 						v-if="$isSubscribed"
-						:disabled="$radius !== 2000"
 						class="tw-h-12 tw-w-12 tw-rounded-md tw-text-white tw-shadow-md"
 						:class="[$radius === 2000 ? 'tw-bg-green-600' : 'tw-bg-gray-500']"
 					>
@@ -216,7 +226,10 @@
 						d="M12 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm8.94 3A8.994 8.994 0 0013 3.06V1h-2v2.06A8.994 8.994 0 003.06 11H1v2h2.06A8.994 8.994 0 0011 20.94V23h2v-2.06A8.994 8.994 0 0020.94 13H23v-2h-2.06zM12 19c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z"
 					/>
 				</svg>
-				<span>Record</span>
+				<span class="tw-leading-tight">
+					Record
+					<br />Crime
+				</span>
 			</button>
 			<div
 				class="tw-text-sm tw-bg-green-600 tw-flex tw-items-center tw-whitespace-nowrap tw-text-white tw-px-3 tw-rounded"
@@ -240,7 +253,7 @@ import crimes from '@/data.json'
 import IconButton from '../components/utils/IconButton.vue'
 import Dropdown from '../components/utils/Dropdown.vue'
 
-const initialZoom = 13
+const initialZoom = 14
 const iLatLng = () => ({ lat: 0, lng: 0 })
 
 export default {
@@ -594,7 +607,7 @@ export default {
 			`
 			else div.innerHTML = `
 				${!rec.confirmedBy ? "<div class='tw-text-sm tw-text-red-500 tw-mb-0'>Not confirmed yet</div>" : ""}
-				<div>Please drag circle here or increase its radius of to ${this.isAdmin ? "view and review" : "view"} this particular crime record</div>
+				<div>Please drag circle here or increase its radius to ${this.isAdmin ? "view and review" : "view"} this particular crime record</div>
 			`
 
 			if (rec.isInside && (this.isAdmin || canDelete)) div.appendChild(wrapper)

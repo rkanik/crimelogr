@@ -100,9 +100,12 @@
 			<button
 				type="button"
 				@click="onSendResetPassMail"
-				class="btn btn-primary tw-mt-4 tw-ml-3"
+				class="btn btn-success tw-mt-4 tw-ml-3"
 			>Change Password</button>
 		</b-form>
+		<div class="tw-mt-4">
+			<b-button variant="primary" class="tw-w-full tw-block">Subscribe now</b-button>
+		</div>
 	</b-container>
 </template>
 

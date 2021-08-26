@@ -175,12 +175,12 @@ export default {
 				}
 
 				this.$isUser && (notConfirmed = `
-					<p class='tw-text-sm tw-text-red-500 tw-ml-3 tw-mb-0 tw-leading-9'>Not confirmed yet</p>
+					<div class='tw-text-sm tw-text-red-500 tw-mb-0 tw-leading-9'>Not confirmed yet</div>
 				`)
 			}
 
 			!this.$isViewer && wrapper.appendChild(btn)
-			notConfirmed && (wrapper.innerHTML += notConfirmed)
+
 
 			div.innerHTML = `
 				<div>Category: <strong>${rec.category}</strong></div>
@@ -194,7 +194,7 @@ export default {
 				<div>Web Link: <strong>${rec.website}</strong></div>
 				${this.isAdmin ? `<div>Recorded By: <strong>${rec.recordedBy}</strong></div>` : ''}
 			`
-
+			notConfirmed && (div.innerHTML += notConfirmed)
 			div.appendChild(wrapper)
 			return div
 		}

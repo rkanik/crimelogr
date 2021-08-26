@@ -1,7 +1,7 @@
 <template>
 	<div class="tw-py-5 md:tw-py-10 lg:tw-py-12 xl:tw-py-16">
 		<b-card class="md:tw-p-5">
-			<img src="@/assets/img/logo-1-transparent.png" alt="Logo" class="tw-h-24" />
+			<img src="@/assets/img/logo-1-transparent.png" alt="Logo" class="tw-h-32" />
 			<div class="tw-text-base tw-mt-4 tw-text-red-500">Welcome to CrimeLogr</div>
 			<h3 class="tw-text-2xl tw-mt-2">Login with your email and password</h3>
 			<hr class="tw-my-4" />

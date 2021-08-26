@@ -564,7 +564,7 @@ export default {
 			}
 			if (this.$user.userId === rec.recordedBy && !rec.confirmedBy) {
 				notConfirmed = `
-					<p class='tw-text-sm tw-text-red-500 tw-ml-3 tw-mb-0 tw-leading-9'>Not confirmed yet</p>
+					<div class='tw-text-sm tw-text-red-500 tw-ml-3 tw-mb-0 tw-leading-9'>Not confirmed yet</div>
 				`
 			}
 
@@ -591,7 +591,6 @@ export default {
 			}
 
 			canDelete && wrapper.appendChild(btn)
-			notConfirmed && (wrapper.innerHTML += notConfirmed)
 
 			if (rec.isInside) div.innerHTML = `
 				<div>Category: <strong>${rec.category}</strong></div>
@@ -609,8 +608,9 @@ export default {
 				${!rec.confirmedBy ? "<div class='tw-text-sm tw-text-red-500 tw-mb-0'>Not confirmed yet</div>" : ""}
 				<div>Please drag circle here or increase its radius to ${this.isAdmin ? "view and review" : "view"} this particular crime record</div>
 			`
-
+			notConfirmed && (div.innerHTML += notConfirmed)
 			if (rec.isInside && (this.isAdmin || canDelete)) div.appendChild(wrapper)
+
 			return div
 		}
 	}

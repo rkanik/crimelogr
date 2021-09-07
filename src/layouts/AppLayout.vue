@@ -1,14 +1,16 @@
 <template>
-	<div
-		class="app-layout tw-flex tw-flex-col tw-overflow-hidden tw-max-w-3xl tw-w-full tw-relative tw-mx-auto"
-	>
+	<div class="app-layout tw-flex tw-flex-col tw-overflow-hidden tw-max-w-3xl tw-w-full tw-relative tw-mx-auto">
 		<main class="app-layout__main tw-flex-1 tw-flex tw-flex-col tw-overflow-hidden">
 			<route-wrapper>
 				<router-view />
 			</route-wrapper>
 		</main>
 		<Footer class="tw-flex-none" />
-		<SOSDialog @type="sos.crimeType=$event" @sos="onClickSoS"></SOSDialog>
+		<SOSDialog
+			@type="sos.crimeType=$event"
+			@sos="onClickSoS"
+			@whatsapp='onShareWithWhatsapp'
+		></SOSDialog>
 	</div>
 </template>
 
@@ -104,14 +106,23 @@ export default {
 			'setRecords', 'setFilter',
 			'pushCrime', 'concatCrimes', 'updateCrime'
 		]),
-		async onClickSoS({ type }) {
-			navigator.geolocation.getCurrentPosition(position => {
-				const { latitude, longitude } = position.coords
-				navigator.share({
-					title: `CrimeLogr`,
-					text: `This is an SOS message from an App called CrimeLogr. This is to let you know I am involved in (or witnessing) the following type of crime: ${type}. My current location is here: https://crimelogr.com/home?center=${latitude},${longitude} \n\n*** This SOS alert was generated from crimelogr app. You can learn more about it and download it from www.crimelogr.com ***`,
-					url: `${location.origin}/home?center=${latitude},${longitude}`,
+		getSoSText(type) {
+			return new Promise(resolve => {
+				navigator.geolocation.getCurrentPosition(position => {
+					const { latitude, longitude } = position.coords
+					return resolve({
+						lat: latitude,
+						lng: longitude,
+						text: `This is an SOS message from an App called CrimeLogr. This is to let you know I am involved in (or witnessing) the following type of crime: ${type}. My current location is here: https://crimelogr.com/home?center=${latitude},${longitude} \n\n*** This SOS alert was generated from crimelogr app. You can learn more about it and download it from www.crimelogr.com ***`
+					})
 				})
+			})
+		},
+		async onClickSoS({ type }) {
+			let { text, lat, lng } = await this.getSoSText(type)
+			navigator.share({
+				text, title: `CrimeLogr`,
+				url: `${location.origin}/home?center=${lat},${lng}`,
 			})
 		},
 		isExist(crime) {
@@ -130,6 +141,13 @@ export default {
 			if (this.$isUser && !crime.confirmedAt && crime.recordedBy !== this.$user.userId) return false
 			return true
 		},
+		async onShareWithWhatsapp({ type }) {
+			let { text } = await this.getSoSText(type)
+			let anchor = document.createElement('a')
+			anchor.setAttribute('href', `whatsapp://send?text=${text}`)
+			anchor.setAttribute('data-action', "share/whatsapp/share")
+			anchor.click()
+		}
 	}
 }
 </script>

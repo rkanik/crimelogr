@@ -7,9 +7,9 @@
 		</main>
 		<Footer class="tw-flex-none" />
 		<SOSDialog
-			@type="sos.crimeType=$event"
 			@sos="onClickSoS"
-			@whatsapp='onShareWithWhatsapp'
+			@social='onSocialShare'
+			@type="sos.crimeType=$event"
 		></SOSDialog>
 	</div>
 </template>
@@ -141,11 +141,11 @@ export default {
 			if (this.$isUser && !crime.confirmedAt && crime.recordedBy !== this.$user.userId) return false
 			return true
 		},
-		async onShareWithWhatsapp({ type }) {
+		async onSocialShare({ type, app }) {
 			let { text } = await this.getSoSText(type)
 			let anchor = document.createElement('a')
-			anchor.setAttribute('href', `whatsapp://send?text=${text}`)
-			anchor.setAttribute('data-action', "share/whatsapp/share")
+			anchor.setAttribute('href', `${app}://send?text=${text}`)
+			anchor.setAttribute('data-action', `share/${app}/share`)
 			anchor.click()
 		}
 	}

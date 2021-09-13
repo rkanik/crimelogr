@@ -19,9 +19,9 @@
 			<button>
 				<img
 					alt
-					@click="type && $emit('whatsapp',{ type })"
 					class="tw-h-12 tw-w-12"
 					src="@/assets/img/whatsapp.png"
+					@click="type && $emit('social',{ type, app:'whatsapp' })"
 				/>
 			</button>
 			<div class="tw-w-16">
@@ -36,9 +36,14 @@
 					/>
 				</button>
 			</div>
-			<div class="tw-w-12">
-
-			</div>
+			<button>
+				<img
+					alt
+					class="tw-h-10 tw-w-10"
+					src="@/assets/img/messenger.png"
+					@click="type && $emit('social',{ type, app:'messenger' })"
+				/>
+			</button>
 		</div>
 	</b-modal>
 </template>

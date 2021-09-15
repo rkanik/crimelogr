@@ -8,7 +8,7 @@
 		<Footer class="tw-flex-none" />
 		<SOSDialog
 			@sos="onClickSoS"
-			@social='onSocialShare'
+			:crime-type="sos.crimeType"
 			@type="sos.crimeType=$event"
 		></SOSDialog>
 	</div>
@@ -30,6 +30,9 @@ export default {
 		SOSDialog
 	},
 	data: () => ({
+		sos: {
+			crimeType: ""
+		},
 		unsubscribeCrimes: null,
 	}),
 	created() {
@@ -106,24 +109,13 @@ export default {
 			'setRecords', 'setFilter',
 			'pushCrime', 'concatCrimes', 'updateCrime'
 		]),
-		getSoSText(type) {
-			return new Promise(resolve => {
-				navigator.geolocation.getCurrentPosition(position => {
-					const { latitude, longitude } = position.coords
-					return resolve({
-						lat: latitude,
-						lng: longitude,
-						text: `This is an SOS message from an App called CrimeLogr. This is to let you know I am involved in (or witnessing) the following type of crime: ${type}. My current location is here: https://crimelogr.com/home?center=${latitude},${longitude} \n\n*** This SOS alert was generated from crimelogr app. You can learn more about it and download it from www.crimelogr.com ***`
-					})
-				})
-			})
-		},
-		async onClickSoS({ type }) {
-			let { text, lat, lng } = await this.getSoSText(type)
-			navigator.share({
-				text, title: `CrimeLogr`,
-				url: `${location.origin}/home?center=${lat},${lng}`,
-			})
+		onClickSoS() {
+			if (window.Android) window.Android.openShareDialog(
+				`This is an SOS message from an App called CrimeLogr. This is to let you know I am involved in (or witnessing) the following type of crime: ${this.sos.crimeType}. My current location is here: https://crimelogr.com/home?center={{lat}},{{lng}} \n\n*** This SOS alert was generated from crimelogr app. You can learn more about it and download it from www.crimelogr.com ***`
+			)
+			else {
+				console.log('NO window.Android')
+			}
 		},
 		isExist(crime) {
 			return this.$records.some(
@@ -141,13 +133,6 @@ export default {
 			if (this.$isUser && !crime.confirmedAt && crime.recordedBy !== this.$user.userId) return false
 			return true
 		},
-		async onSocialShare({ type, app }) {
-			let { text } = await this.getSoSText(type)
-			let anchor = document.createElement('a')
-			anchor.setAttribute('href', `${app}://send?text=${text}`)
-			anchor.setAttribute('data-action', `share/${app}/share`)
-			anchor.click()
-		}
 	}
 }
 </script>
